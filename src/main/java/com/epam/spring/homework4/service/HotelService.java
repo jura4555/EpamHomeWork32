@@ -12,7 +12,7 @@ public interface HotelService {
 
     HotelDTO createHotel(HotelDTO hotelDTO);
 
-    HotelDTO updateHotel(HotelDTO hotelDTO);
+    HotelDTO updateHotel(int id, HotelDTO hotelDTO);
 
     boolean deleteHotel(int hotelId);
 }

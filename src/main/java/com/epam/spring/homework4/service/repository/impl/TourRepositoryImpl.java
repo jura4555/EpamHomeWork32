@@ -28,6 +28,15 @@ public class TourRepositoryImpl implements TourRepository {
     }
 
     @Override
+    public Tour getTourById(int tourId) {
+        log.info("[Repository] getTour by id {} ", tourId);
+        return tours.stream()
+                .filter(t -> t.getId() == tourId)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("[Repository] Tour is not found!"));
+    }
+
+    @Override
     public Tour getTourByName(String tourName) {
         log.info("[Repository] getTour by name {} ", tourName);
         return tours.stream()
@@ -86,7 +95,7 @@ public class TourRepositoryImpl implements TourRepository {
 
     @Override
     public Tour createTour(Tour tour) {
-        log.info("[Repository] createTour " + tour.getName());
+        log.info("[Repository] createTour " + tour.getId());
         id++;
         tour.setId(id);
         tours.add(tour);
@@ -97,11 +106,10 @@ public class TourRepositoryImpl implements TourRepository {
     @Override
     public Tour updateTour(Tour tour) {
         log.info("[Repository] updateTour by all field");
-        String tourName = tour.getName();
-        boolean isDeleted = tours.removeIf(t -> t.getName().equals(tourName));
+        boolean isDeleted = tours.removeIf(t -> t.getId() == tour.getId());
         if(isDeleted) {
             tours.add(tour);
-            log.info("[Repository] updateTour is done in tour: " + tour.getName());
+            log.info("[Repository] updateTour is done in tour: " + tour.getId());
         }
         else{
             throw new NotFoundException("[Repository] Tour is not found!");
@@ -110,8 +118,8 @@ public class TourRepositoryImpl implements TourRepository {
     }
 
     @Override
-    public boolean deleteTour(String tourName) {
-        log.info("[Repository] deleteTour by name {} ", tourName);
-        return tours.removeIf(t -> t.getName().equals(tourName));
+    public boolean deleteTour(int tourId) {
+        log.info("[Repository] deleteTour by id {} ", tourId);
+        return tours.removeIf(t -> t.getId() == tourId);
     }
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserRepository {
 
+    User getUserById(int id);
+
     User getUserByLogin(String login);
 
     List<User> getUserByRole(UserRole userRole);
@@ -16,7 +18,7 @@ public interface UserRepository {
 
     User updateUser(User user);
 
-    UserDetails getUserDetails(int userId);
+    UserDetails getUserDetails(int id);
 
 
 

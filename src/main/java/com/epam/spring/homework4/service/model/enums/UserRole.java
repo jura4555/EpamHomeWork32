@@ -1,7 +1,7 @@
 package com.epam.spring.homework4.service.model.enums;
 
 public enum UserRole {
-    USER(1), REGISTERED_USER(2), MANAGER(3), ADMIN(4);
+    USER(1), MANAGER(2), ADMIN(3);
     int index;
 
     UserRole(int i){

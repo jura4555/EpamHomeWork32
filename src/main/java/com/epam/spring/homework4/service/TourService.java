@@ -22,7 +22,11 @@ public interface TourService {
 
     TourDTO createTour(TourDTO tourDTO);
 
-    TourDTO updateTour(TourDTO tourDTO);
+    TourDTO updateTour(int id, TourDTO tourDTO);
 
-    boolean deleteTour(String tourName);
+    TourDTO updateTourBurning(int id, boolean burning);
+
+    TourDTO updateTourMaxDisCount(int id, int maxDisCount);
+
+    boolean deleteTour(int tourId);
 }

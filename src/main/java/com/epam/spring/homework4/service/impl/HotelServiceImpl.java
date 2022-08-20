@@ -1,6 +1,5 @@
 package com.epam.spring.homework4.service.impl;
 
-
 import com.epam.spring.homework4.controller.dto.HotelDTO;
 import com.epam.spring.homework4.service.HotelService;
 import com.epam.spring.homework4.service.mapper.HotelMapper;
@@ -47,9 +46,10 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelDTO updateHotel(HotelDTO hotelDTO) {
+    public HotelDTO updateHotel(int id, HotelDTO hotelDTO) {
         log.info("[Service] updateHotel with all fields {}");
         Hotel hotel = hotelMapper.mapHotelDtoToHotel(hotelDTO);
+        hotel.setId(id);
         hotel = hotelRepository.updateHotel(hotel);
         return hotelMapper.mapHotelToHotelDto(hotel);
     }

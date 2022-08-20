@@ -10,6 +10,8 @@ public interface TourRepository {
 
     List<Tour> getAllTour();
 
+    Tour getTourById(int tourId);
+
     Tour getTourByName(String tourName);
 
     List<Tour> getTourByTourType(TourType tourType);
@@ -24,5 +26,5 @@ public interface TourRepository {
 
     Tour updateTour(Tour tour);
 
-    boolean deleteTour(String tourName);
+    boolean deleteTour(int tourId);
 }

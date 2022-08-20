@@ -1,6 +1,5 @@
 package com.epam.spring.homework4.controller;
 
-
 import com.epam.spring.homework4.controller.dto.HotelDTO;
 import com.epam.spring.homework4.service.HotelService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -33,16 +33,16 @@ public class HotelController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hotel")
-    public HotelDTO createHotel(@RequestBody HotelDTO hotelDTO) {
+    public HotelDTO createHotel(@RequestBody @Valid HotelDTO hotelDTO) {
         log.info("[Controller] createHotel");
         return hotelService.createHotel(hotelDTO);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/hotel")
-    public HotelDTO updateHotel(@RequestBody HotelDTO hotelDTO) {
+    @PutMapping("/hotel/{hotelId}")
+    public HotelDTO updateHotel(@PathVariable(value = "hotelId")int id, @RequestBody @Valid HotelDTO hotelDTO) {
         log.info("[Controller] updateHotel with all fields {}");
-        return hotelService.updateHotel(hotelDTO);
+        return hotelService.updateHotel(id, hotelDTO);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

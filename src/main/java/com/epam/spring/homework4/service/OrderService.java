@@ -15,7 +15,11 @@ public interface OrderService {
 
     OrderDTO createOrder(OrderDTO orderDTO);
 
-    OrderDTO updateOrder(OrderDTO orderDTO);
+    OrderDTO updateOrderDescription(int id, String description);
 
-    boolean deleteOrder(int orderId);
+    OrderDTO updateOrderPrice(int id, int stepDisCount);
+
+    OrderDTO updateOrderStatus(int id, TourStatus tourStatus);
+
+
 }

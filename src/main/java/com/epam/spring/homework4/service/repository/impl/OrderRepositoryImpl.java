@@ -51,6 +51,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         log.info("[Repository] createOrder " + order);
         id++;
         order.setId(id);
+        order.setTourStatus(TourStatus.REGISTERED);
         orders.add(order);
         log.info("[Repository] successfully created order with id:{}", order.getId());
         return order;
@@ -58,23 +59,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order updateOrder(Order order) {
-        log.info("[Repository] updateOrder by all field");
-        int orderId = order.getId();
-        boolean isDeleted = orders.removeIf(o -> o.getId() == orderId);
-        if(isDeleted) {
-            orders.add(order);
-            log.info("[Repository] updateOrder is done in order: " + order.getId());
-        }
-        else{
-            throw new NotFoundException("[Repository] Order is not found!");
-        }
+        log.info("[Repository] updateOrder");
+        orders.removeIf(o -> o.getId() == order.getId());
+        orders.add(order);
+        log.info("[Repository] success updateOrder");
         return order;
     }
 
-    @Override
-    public boolean deleteOrder(int orderId) {
-        log.info("[Repository] deleteOrder by id {} ", orderId);
-        return orders.removeIf(o -> o.getId() == orderId);
-
-    }
 }

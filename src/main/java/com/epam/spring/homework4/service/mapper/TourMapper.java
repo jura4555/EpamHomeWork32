@@ -6,7 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {HotelMapper.class})
+
 public interface TourMapper {
 
     TourDTO mapTourToTourDTO(Tour tour);
@@ -18,3 +19,4 @@ public interface TourMapper {
         return  (boolean) burning;
     }
 }
+

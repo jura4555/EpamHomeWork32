@@ -46,8 +46,7 @@ public class HotelRepositoryImpl implements HotelRepository {
     @Override
     public Hotel updateHotel(Hotel hotel) {
         log.info("[Repository] updateHotel by all field");
-        int hotelId = hotel.getId();
-        boolean isDeleted = hotels.removeIf(h -> h.getId() == hotelId);
+        boolean isDeleted = hotels.removeIf(h -> h.getId() == hotel.getId());
         if(isDeleted) {
             hotels.add(hotel);
             log.info("[Repository] updateHotel is done in hotel:" + hotel.getId() + " " + hotel.getName());

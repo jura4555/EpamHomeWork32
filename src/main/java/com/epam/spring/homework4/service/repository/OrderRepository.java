@@ -17,6 +17,5 @@ public interface OrderRepository {
 
     Order updateOrder(Order order);
 
-    boolean deleteOrder(int orderId);
 
 }

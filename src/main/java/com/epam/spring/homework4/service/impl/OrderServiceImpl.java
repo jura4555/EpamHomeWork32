@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Component
@@ -51,23 +52,54 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO createOrder(OrderDTO orderDTO) {
-        log.info("[Service] createOrder with id {}", orderDTO.getId());
+        log.info("[Service] createOrder");
         Order order = orderMapper.mapOrderDTOToOrder(orderDTO);
         order = orderRepository.createOrder(order);
         return orderMapper.mapOrderToOrderDTO(order);
     }
 
     @Override
-    public OrderDTO updateOrder(OrderDTO orderDTO) {
-        log.info("[Service] updateOrder with all fields");
-        Order order = orderMapper.mapOrderDTOToOrder(orderDTO);
+    public OrderDTO updateOrderDescription(int id, String description) {
+        log.info("[Service] updateOrder with description fields");
+        Order order = orderRepository.getOrderByOrderId(id);
+        order.setDescription(description);
         order = orderRepository.updateOrder(order);
         return orderMapper.mapOrderToOrderDTO(order);
     }
 
     @Override
-    public boolean deleteOrder(int orderId) {
-        log.info("[Service] deleteOrder with id {}", orderId);
-        return orderRepository.deleteOrder(orderId);
+    public OrderDTO updateOrderPrice(int id, int stepDisCount) {
+        log.info("[Service] updateOrder with price fields");
+        Order order = orderRepository.getOrderByOrderId(id);
+        int maxDisCount = order.getTour().getMaxDisCount();
+        if(maxDisCount == 0){
+            throw new RuntimeException("Please update tour.maxDisCount because maxDisCount == 0");
+        }
+        Random random = new Random();
+        int randNumber = random.nextInt(maxDisCount / stepDisCount);
+        int discount = stepDisCount * randNumber;
+        double rawPrice = order.getTour().getPrice();
+        double price = rawPrice - (rawPrice * discount/100);
+        order.setStepDisCount(stepDisCount);
+        order.setDisCount(discount);
+        order.setPrice(price);
+        order = orderRepository.updateOrder(order);
+        return orderMapper.mapOrderToOrderDTO(order);
     }
+
+    @Override
+    public OrderDTO updateOrderStatus(int id, TourStatus tourStatus) {
+        log.info("[Service] updateOrder with tourStatus fields");
+        Order order = orderRepository.getOrderByOrderId(id);
+        if(order.getPrice() == 0){
+            throw new RuntimeException("Please update price");
+        }
+        if(tourStatus == TourStatus.PAID){
+            order.getTour().setPlaceCount(order.getTour().getPlaceCount() -1);
+        }
+        order.setTourStatus(tourStatus);
+        order = orderRepository.updateOrder(order);
+        return orderMapper.mapOrderToOrderDTO(order);
+    }
+
 }

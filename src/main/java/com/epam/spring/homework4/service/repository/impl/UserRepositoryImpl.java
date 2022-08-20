@@ -4,6 +4,7 @@ import com.epam.spring.homework4.service.exception.NotFoundException;
 import com.epam.spring.homework4.service.model.User;
 import com.epam.spring.homework4.service.model.UserDetails;
 import com.epam.spring.homework4.service.model.enums.UserRole;
+import com.epam.spring.homework4.service.model.enums.UserStatus;
 import com.epam.spring.homework4.service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,13 @@ public class UserRepositoryImpl implements UserRepository {
     private int id;
     private final List<User> users = new ArrayList<>();
 
+    public User getUserById(int id) {
+        log.info("[Repository] getUser by id {} ", id);
+        return users.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("[Repository] User is not found!"));
+    }
     @Override
     public User getUserByLogin(String login) {
         log.info("[Repository] getUser by login {} ", login);
@@ -43,10 +51,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User createUser(User user) {
-        log.info("[Repository] createUser " + user.getLogin());
+        log.info("[Repository] createUser " + user.getId());
         id++;
         user.setId(id);
         user.getUserDetails().setId(id);
+        user.setUserRole(UserRole.USER);
+        user.setUserStatus(UserStatus.ACTIVE);
         users.add(user);
         log.info("[Repository] successfully created user with id:{}", user.getId());
         return user;
@@ -55,23 +65,17 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User updateUser(User user) {
         log.info("[Repository] updateUser by all field");
-        int userId = user.getId();
-        boolean isDeleted = users.removeIf(u -> u.getId() == userId);
-        if(isDeleted) {
-            users.add(user);
-            log.info("[Repository] updateUser is done in user: " + user.getId());
-        }
-        else{
-            throw new NotFoundException("[Repository] User is not found!");
-        }
+        users.removeIf(u -> u.getLogin().equals(user.getLogin()));
+        users.add(user);
+        log.info("[Repository] updateUser is done in user id: " + user.getId());
         return user;
     }
 
     @Override
-    public UserDetails getUserDetails(int userId) {
-        log.info("[Repository] getUserDetails by user id {} ", userId);
+    public UserDetails getUserDetails(int id) {
+        log.info("[Repository] getUserDetails by user id {} ", id);
         User user = users.stream()
-                .filter(u -> u.getId() == userId)
+                .filter(u -> u.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("[Repository] User is not found!"));
         return user.getUserDetails();

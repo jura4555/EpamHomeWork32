@@ -70,6 +70,7 @@ public class TourServiceImpl implements TourService {
         return myTour.stream()
                 .map(tourMapper::mapTourToTourDTO)
                 .sorted(Comparator.comparing(TourDTO::getName))
+                .sorted(Comparator.comparing(TourDTO::getPrice))
                 .sorted(Comparator.comparing(TourDTO -> !TourDTO.isBurning()))
                 .collect(Collectors.toList());
     }
@@ -94,17 +95,39 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public TourDTO updateTour(TourDTO tourDTO) {
+    public TourDTO updateTour(int id, TourDTO tourDTO) {
         log.info("[Service] updateTour with all fields");
         Tour tour = tourMapper.mapTourDTOToTour(tourDTO);
+        tour.setId(id);
+        Tour tourPlace = tourRepository.getTourById(id);
+        tour.setPlaceCount(tourPlace.getPlaceCount());
         tour = tourRepository.updateTour(tour);
         return tourMapper.mapTourToTourDTO(tour);
     }
 
     @Override
-    public boolean deleteTour(String tourName) {
-        log.info("[Service] deleteTour with name {}", tourName);
-        return tourRepository.deleteTour(tourName);
+    public TourDTO updateTourBurning(int id, boolean burning) {
+        log.info("[Service] updateTour with burning field");
+        Tour tour = tourRepository.getTourById(id);
+        tour.setBurning(burning);
+        tour = tourRepository.updateTour(tour);
+        return tourMapper.mapTourToTourDTO(tour);
+    }
+
+    @Override
+    public TourDTO updateTourMaxDisCount(int id, int maxDisCount) {
+        log.info("[Service] updateTour with burning field");
+        Tour tour = tourRepository.getTourById(id);
+        tour.setMaxDisCount(maxDisCount);
+        tour = tourRepository.updateTour(tour);
+        return tourMapper.mapTourToTourDTO(tour);
+    }
+
+
+    @Override
+    public boolean deleteTour(int tourId) {
+        log.info("[Service] deleteTour with id {}", tourId);
+        return tourRepository.deleteTour(tourId);
     }
 
 

@@ -8,6 +8,7 @@ import com.epam.spring.homework4.service.mapper.UserMapper;
 import com.epam.spring.homework4.service.model.User;
 import com.epam.spring.homework4.service.model.UserDetails;
 import com.epam.spring.homework4.service.model.enums.UserRole;
+import com.epam.spring.homework4.service.model.enums.UserStatus;
 import com.epam.spring.homework4.service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,17 +55,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
+    public UserDTO updateUser(int id, UserDTO userDTO) {
         log.info("[Service] updateUser with all fields");
         User user = userMapper.mapUserDTOToUser(userDTO);
+        User fullUser = userRepository.getUserById(id);
+        user.setId(fullUser.getId());
+        user.setUserRole(fullUser.getUserRole());
+        user.setUserStatus(fullUser.getUserStatus());
         user = userRepository.updateUser(user);
         return userMapper.mapUserToUserDTO(user);
     }
 
     @Override
-    public UserDetailsDTO getUserDetails(int userId) {
-        log.info("[Service] getUserDetails by user id {} ", userId);
-        UserDetails userDetails = userRepository.getUserDetails(userId);
+    public UserDTO updateUserRole(int id, UserRole userRole) {
+        log.info("[Service] updateUser with userRole field");
+        User user = userRepository.getUserById(id);
+        user.setUserRole(userRole);
+        user = userRepository.updateUser(user);
+        return userMapper.mapUserToUserDTO(user);
+    }
+
+    @Override
+    public UserDTO updateUserStatus(int id, UserStatus userStatus) {
+        log.info("[Service] updateUser with userRole field");
+        User user = userRepository.getUserById(id);
+        user.setUserStatus(userStatus);
+        user = userRepository.updateUser(user);
+        return userMapper.mapUserToUserDTO(user);
+    }
+
+    @Override
+    public UserDetailsDTO getUserDetails(int id) {
+        log.info("[Service] getUserDetails by user id {} ", id);
+        UserDetails userDetails = userRepository.getUserDetails(id);
         return userDetailsMapper.mapUserDetailsToUserDetailsDto(userDetails);
     }
 

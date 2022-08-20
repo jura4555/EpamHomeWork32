@@ -1,6 +1,5 @@
 package com.epam.spring.homework4.service.mapper;
 
-
 import com.epam.spring.homework4.controller.dto.HotelDTO;
 import com.epam.spring.homework4.service.model.Hotel;
 import org.mapstruct.Mapper;

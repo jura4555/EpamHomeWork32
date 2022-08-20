@@ -1,6 +1,7 @@
 package com.epam.spring.homework4.service.model;
 
 import com.epam.spring.homework4.service.model.enums.UserRole;
+import com.epam.spring.homework4.service.model.enums.UserStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class User {
     private String password;
     private UserDetails userDetails;
     private UserRole userRole;
-    private boolean activated;
+    private UserStatus userStatus;
 
 
 }
