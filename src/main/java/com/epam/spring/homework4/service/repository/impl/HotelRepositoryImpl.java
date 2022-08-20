@@ -1,6 +1,8 @@
 package com.epam.spring.homework4.service.repository.impl;
 
+import com.epam.spring.homework4.service.exception.HotelNotFoundException;
 import com.epam.spring.homework4.service.exception.NotFoundException;
+import com.epam.spring.homework4.service.exception.OrderNotFoundException;
 import com.epam.spring.homework4.service.model.Hotel;
 import com.epam.spring.homework4.service.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,7 @@ public class HotelRepositoryImpl implements HotelRepository {
         return hotels.stream()
                 .filter(h -> h.getName().equals(hotelName))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] Hotel is not found!"));
+                .orElseThrow(() -> new HotelNotFoundException());
     }
 
     @Override
@@ -52,7 +54,7 @@ public class HotelRepositoryImpl implements HotelRepository {
             log.info("[Repository] updateHotel is done in hotel:" + hotel.getId() + " " + hotel.getName());
         }
         else{
-            throw new NotFoundException("[Repository] Hotel is not found!");
+            throw new HotelNotFoundException();
         }
         return hotel;
     }

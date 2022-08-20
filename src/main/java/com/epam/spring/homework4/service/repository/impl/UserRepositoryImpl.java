@@ -1,6 +1,6 @@
 package com.epam.spring.homework4.service.repository.impl;
 
-import com.epam.spring.homework4.service.exception.NotFoundException;
+import com.epam.spring.homework4.service.exception.UserNotFoundException;
 import com.epam.spring.homework4.service.model.User;
 import com.epam.spring.homework4.service.model.UserDetails;
 import com.epam.spring.homework4.service.model.enums.UserRole;
@@ -26,7 +26,7 @@ public class UserRepositoryImpl implements UserRepository {
         return users.stream()
                 .filter(u -> u.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] User is not found!"));
+                .orElseThrow(() -> new UserNotFoundException());
     }
     @Override
     public User getUserByLogin(String login) {
@@ -34,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
         return users.stream()
                 .filter(u -> u.getLogin().equals(login))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] User is not found!"));
+                .orElseThrow(() -> new UserNotFoundException());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .filter(u -> u.getUserRole().equals(userRole))
                 .toList();
         if(myUsers.isEmpty()){
-            throw new NotFoundException("[Repository] Users is not found!");
+            throw new UserNotFoundException();
         }
         return myUsers;
     }
@@ -77,7 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = users.stream()
                 .filter(u -> u.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] User is not found!"));
+                .orElseThrow(() -> new UserNotFoundException());
         return user.getUserDetails();
     }
 

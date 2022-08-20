@@ -1,6 +1,8 @@
 package com.epam.spring.homework4.service.repository.impl;
 
 import com.epam.spring.homework4.service.exception.NotFoundException;
+import com.epam.spring.homework4.service.exception.OrderNotFoundException;
+import com.epam.spring.homework4.service.exception.TourNotFoundException;
 import com.epam.spring.homework4.service.model.Order;
 import com.epam.spring.homework4.service.model.enums.TourStatus;
 import com.epam.spring.homework4.service.repository.OrderRepository;
@@ -32,7 +34,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .filter(o -> o.getTourStatus().equals(tourStatus))
                 .toList();
         if(myOrders.isEmpty()){
-            throw new NotFoundException("[Repository] Orders is not found!");
+            throw new OrderNotFoundException();
         }
         return myOrders;
     }
@@ -43,7 +45,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orders.stream()
                 .filter(o -> o.getId() == orderId)
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] Order is not found!"));
+                .orElseThrow(() -> new OrderNotFoundException());
     }
 
     @Override

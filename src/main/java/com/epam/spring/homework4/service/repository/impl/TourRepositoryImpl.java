@@ -1,6 +1,6 @@
 package com.epam.spring.homework4.service.repository.impl;
 
-import com.epam.spring.homework4.service.exception.NotFoundException;
+import com.epam.spring.homework4.service.exception.TourNotFoundException;
 import com.epam.spring.homework4.service.model.Tour;
 import com.epam.spring.homework4.service.model.enums.HotelType;
 import com.epam.spring.homework4.service.model.enums.TourType;
@@ -33,7 +33,7 @@ public class TourRepositoryImpl implements TourRepository {
         return tours.stream()
                 .filter(t -> t.getId() == tourId)
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] Tour is not found!"));
+                .orElseThrow(() -> new TourNotFoundException());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TourRepositoryImpl implements TourRepository {
         return tours.stream()
                 .filter(t -> t.getName().equals(tourName))
                 .findFirst()
-                .orElseThrow(() -> new NotFoundException("[Repository] Tour is not found!"));
+                .orElseThrow(() -> new TourNotFoundException());
     }
 
     @Override
@@ -52,7 +52,7 @@ public class TourRepositoryImpl implements TourRepository {
                 .filter(t -> t.getTourType().equals(tourType))
                 .toList();
         if(myTours.isEmpty()){
-            throw new NotFoundException("[Repository] Tours is not found!");
+            throw new TourNotFoundException();
         }
         return myTours;
     }
@@ -64,7 +64,7 @@ public class TourRepositoryImpl implements TourRepository {
                 .filter(t -> t.getPlaceCount() == count)
                 .toList();
         if(myTours.isEmpty()){
-            throw new NotFoundException("[Repository] Tours is not found!");
+            throw new TourNotFoundException();
         }
         return myTours;
     }
@@ -76,7 +76,7 @@ public class TourRepositoryImpl implements TourRepository {
                 .filter(t -> t.getPrice() > minPrice && t.getPrice() < maxPrice)
                 .toList();
         if(myTours.isEmpty()){
-            throw new NotFoundException("[Repository] Tours is not found!");
+            throw new TourNotFoundException();
         }
         return myTours;
     }
@@ -88,7 +88,7 @@ public class TourRepositoryImpl implements TourRepository {
                 .filter(t -> t.getHotel().getHotelType().equals(hotelType))
                 .toList();
         if(myTours.isEmpty()){
-            throw new NotFoundException("[Repository] Tours is not found!");
+            throw new TourNotFoundException();
         }
         return myTours;
     }
@@ -112,7 +112,7 @@ public class TourRepositoryImpl implements TourRepository {
             log.info("[Repository] updateTour is done in tour: " + tour.getId());
         }
         else{
-            throw new NotFoundException("[Repository] Tour is not found!");
+            throw new TourNotFoundException();
         }
         return tour;
     }

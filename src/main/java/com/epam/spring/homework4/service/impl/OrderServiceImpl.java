@@ -2,6 +2,8 @@ package com.epam.spring.homework4.service.impl;
 
 import com.epam.spring.homework4.controller.dto.OrderDTO;
 import com.epam.spring.homework4.service.OrderService;
+import com.epam.spring.homework4.service.exception.MaxDisCountNotFound;
+import com.epam.spring.homework4.service.exception.PriceNotFoundException;
 import com.epam.spring.homework4.service.mapper.OrderMapper;
 import com.epam.spring.homework4.service.model.Order;
 import com.epam.spring.homework4.service.model.enums.TourStatus;
@@ -73,10 +75,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.getOrderByOrderId(id);
         int maxDisCount = order.getTour().getMaxDisCount();
         if(maxDisCount == 0){
-            throw new RuntimeException("Please update tour.maxDisCount because maxDisCount == 0");
+            throw new MaxDisCountNotFound();
         }
         Random random = new Random();
-        int randNumber = random.nextInt(maxDisCount / stepDisCount);
+        int randNumber = random.nextInt(maxDisCount / stepDisCount) + 1;
         int discount = stepDisCount * randNumber;
         double rawPrice = order.getTour().getPrice();
         double price = rawPrice - (rawPrice * discount/100);
@@ -92,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
         log.info("[Service] updateOrder with tourStatus fields");
         Order order = orderRepository.getOrderByOrderId(id);
         if(order.getPrice() == 0){
-            throw new RuntimeException("Please update price");
+            throw new PriceNotFoundException();
         }
         if(tourStatus == TourStatus.PAID){
             order.getTour().setPlaceCount(order.getTour().getPlaceCount() -1);
