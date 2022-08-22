@@ -1,5 +1,6 @@
 package com.epam.spring.homework4.controller;
 
+import com.epam.spring.homework4.controller.api.OrderAPI;
 import com.epam.spring.homework4.controller.dto.OrderDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
 import com.epam.spring.homework4.service.OrderService;
@@ -18,57 +19,48 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Validated
-public class OrderController {
+public class OrderController implements OrderAPI{
 
     private final OrderService orderService;
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/order")
+    @Override
     public List<OrderDTO> getAllOrder() {
         log.info("[Controller] receiving all orders");
         return orderService.getAllOrder();
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/order/id/{id}")
-    public OrderDTO getOrderByOrderId(@PathVariable(value = "id") int orderId) {
-        log.info("[Controller] getOrder by id {}", orderId);
-        return orderService.getOrderByOrderId(orderId);
+    @Override
+    public OrderDTO getOrderByOrderId(int id) {
+        log.info("[Controller] getOrder by id {}", id);
+        return orderService.getOrderByOrderId(id);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/order/tour/{tourStatus}")
-    public List<OrderDTO> getOrderByTourStatus(@PathVariable TourStatus tourStatus) {
+    @Override
+    public List<OrderDTO> getOrderByTourStatus(TourStatus tourStatus) {
         log.info("[Controller] getOrders by tourStatus {}", tourStatus);
         return orderService.getOrderByTourStatus(tourStatus);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/order")
-    public OrderDTO createOrder(@RequestBody @Validated(OnCreate.class) OrderDTO orderDTO) {
+    @Override
+    public OrderDTO createOrder(OrderDTO orderDTO) {
         log.info("[Controller] createOrder {}");
         return orderService.createOrder(orderDTO);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/order/{id}/description")
-    public OrderDTO updateOrderDescription(@PathVariable int id, @RequestParam String description) {
+    @Override
+    public OrderDTO updateOrderDescription(int id, String description) {
         log.info("[Controller] updateOrder with description fields");
         return orderService.updateOrderDescription(id, description);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/order/{id}/price")
-    public OrderDTO updateOrderPrice(@PathVariable int id, @RequestParam @Min(1)
-                                                                         @Max(20) int stepDisCount) {
+    @Override
+    public OrderDTO updateOrderPrice(int id, int stepDisCount) {
         log.info("[Controller] updateOrder with price fields");
         return orderService.updateOrderPrice(id, stepDisCount);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/order/{id}/status")
-    public OrderDTO updateOrderStatus(@PathVariable int id, @RequestParam TourStatus tourStatus) {
+    @Override
+    public OrderDTO updateOrderStatus(int id, TourStatus tourStatus) {
         log.info("[Controller] updateOrder with tourStatus field");
         return orderService.updateOrderStatus(id, tourStatus);
     }

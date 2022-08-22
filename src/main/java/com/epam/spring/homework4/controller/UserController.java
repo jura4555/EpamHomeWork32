@@ -1,5 +1,6 @@
 package com.epam.spring.homework4.controller;
 
+import com.epam.spring.homework4.controller.api.UserAPI;
 import com.epam.spring.homework4.controller.dto.UserDTO;
 import com.epam.spring.homework4.controller.dto.UserDetailsDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
@@ -19,56 +20,48 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Validated
-public class UserController {
+public class UserController implements UserAPI {
 
     private final UserService userService;
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/user/login/{login}")
-    public UserDTO getUserByLogin(@PathVariable String login){
+    @Override
+    public UserDTO getUserByLogin(String login){
         log.info("[Controller] getUser by login {}", login);
         return userService.getUserByLogin(login);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/user/role/{userRole}")
-    public List<UserDTO> getUserByRole(@PathVariable UserRole userRole) {
+    @Override
+    public List<UserDTO> getUserByRole(UserRole userRole) {
         log.info("[Controller] getUser by userRole {}", userRole);
         return userService.getUserByRole(userRole);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/user")
-    public UserDTO createUser(@RequestBody @Validated(OnCreate.class) UserDTO userDTO){
+    @Override
+    public UserDTO createUser(UserDTO userDTO){
         log.info("[Controller] createUser");
         return userService.createUser(userDTO);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping ("/user/{id}")
-    public UserDTO updateUser(@PathVariable int id, @RequestBody @Validated(OnUpdate.class) UserDTO userDTO) {
+    @Override
+    public UserDTO updateUser(int id, UserDTO userDTO) {
         log.info("[Controller] updateUser with all fields");
         return userService.updateUser(id, userDTO);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping ("/user/{id}/role")
-    public UserDTO updateUserRole(@PathVariable int id, @RequestParam UserRole userRole) {
+    @Override
+    public UserDTO updateUserRole(int id, UserRole userRole) {
         log.info("[Controller] updateUser with userRole field");
         return userService.updateUserRole(id, userRole);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping ("/user/{id}/status")
-    public UserDTO updateUserStatus(@PathVariable int id, @RequestParam UserStatus userStatus) {
+    @Override
+    public UserDTO updateUserStatus(int id, UserStatus userStatus) {
         log.info("[Controller] updateUser with userRole field");
         return userService.updateUserStatus(id, userStatus);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/user/{id}/user_details")
-    public UserDetailsDTO getUserDetails(@PathVariable int id){
+    @Override
+    public UserDetailsDTO getUserDetails(int id){
         log.info("[Controller] getUserDetails by user id {} ", id);
         return userService.getUserDetails(id);
     }

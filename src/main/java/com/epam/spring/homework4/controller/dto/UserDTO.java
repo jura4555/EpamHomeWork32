@@ -1,17 +1,14 @@
 package com.epam.spring.homework4.controller.dto;
 
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
-import com.epam.spring.homework4.controller.dto.validation.group.OnUpdate;
 import com.epam.spring.homework4.service.model.enums.UserRole;
 import com.epam.spring.homework4.service.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
