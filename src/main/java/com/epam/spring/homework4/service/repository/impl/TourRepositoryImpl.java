@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +51,7 @@ public class TourRepositoryImpl implements TourRepository {
         log.info("[Repository] getTour by tourType {} ", tourType);
         List<Tour> myTours = tours.stream()
                 .filter(t -> t.getTourType().equals(tourType))
-                .toList();
+                .collect(Collectors.toList());
         if(myTours.isEmpty()){
             throw new TourNotFoundException();
         }
@@ -62,7 +63,7 @@ public class TourRepositoryImpl implements TourRepository {
         log.info("[Repository] getTour by place count {} ", count);
         List<Tour> myTours = tours.stream()
                 .filter(t -> t.getPlaceCount() == count)
-                .toList();
+                .collect(Collectors.toList());
         if(myTours.isEmpty()){
             throw new TourNotFoundException();
         }
@@ -74,7 +75,7 @@ public class TourRepositoryImpl implements TourRepository {
         log.info("[Repository] getTour by price {} ", minPrice + " < my price < " + maxPrice);
         List<Tour> myTours = tours.stream()
                 .filter(t -> t.getPrice() > minPrice && t.getPrice() < maxPrice)
-                .toList();
+                .collect(Collectors.toList());
         if(myTours.isEmpty()){
             throw new TourNotFoundException();
         }
@@ -86,7 +87,7 @@ public class TourRepositoryImpl implements TourRepository {
         log.info("[Repository] getTour by hotelType {} ", hotelType);
         List<Tour> myTours = tours.stream()
                 .filter(t -> t.getHotel().getHotelType().equals(hotelType))
-                .toList();
+                .collect(Collectors.toList());
         if(myTours.isEmpty()){
             throw new TourNotFoundException();
         }

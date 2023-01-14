@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         log.info("[Repository] getOrders by tourStatus {} ", tourStatus);
         List<Order> myOrders = orders.stream()
                 .filter(o -> o.getTourStatus().equals(tourStatus))
-                .toList();
+                .collect(Collectors.toList());
         if(myOrders.isEmpty()){
             throw new OrderNotFoundException();
         }

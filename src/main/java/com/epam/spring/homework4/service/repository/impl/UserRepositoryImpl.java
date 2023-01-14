@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
         log.info("[Repository] getUser by userRole {} ", userRole);
         List<User> myUsers = users.stream()
                 .filter(u -> u.getUserRole().equals(userRole))
-                .toList();
+                .collect(Collectors.toList());
         if(myUsers.isEmpty()){
             throw new UserNotFoundException();
         }
