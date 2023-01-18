@@ -20,16 +20,16 @@ public class OrderDTO {
 
     private TourDTO tour;
 
-    @Min(value = 0, message = "order.price.null", groups = OnCreate.class)
-    @Max(value = 0, message = "order.price.null", groups = OnCreate.class)
+    @Min(value = 0, message = "{order.price.null}", groups = OnCreate.class)
+    @Max(value = 0, message = "{order.price.null}", groups = OnCreate.class)
     private double price;
 
-    @Min(value = 0, message = "order.stepDisCount.null", groups = OnCreate.class)
-    @Max(value = 0, message = "order.stepDisCount.null", groups = OnCreate.class)
+    @Min(value = 0, message = "{order.stepDisCount.null}", groups = OnCreate.class)
+    @Max(value = 0, message = "{order.stepDisCount.null}", groups = OnCreate.class)
     private int stepDisCount;
 
-    @Min(value = 0, message = "order.disCount.null", groups = OnCreate.class)
-    @Max(value = 0, message = "order.disCount.null", groups = OnCreate.class)
+    @Min(value = 0, message = "{order.disCount.null}", groups = OnCreate.class)
+    @Max(value = 0, message = "{order.disCount.null}", groups = OnCreate.class)
     private int disCount;
 
     @Null(message = "{order.tourStatus.null}", groups = OnCreate.class)

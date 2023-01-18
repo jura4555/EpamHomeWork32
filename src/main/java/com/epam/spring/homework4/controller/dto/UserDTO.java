@@ -19,19 +19,19 @@ public class UserDTO {
 
     private int id;
 
-    @NotBlank(message = "user.login.notBlank", groups = OnCreate.class)
-    @Pattern(message = "user.login.pattern",
-            regexp = "^([A-Za-z]+\\w*){3,15}$")
+    @NotBlank(message = "{user.login.notBlank}", groups = OnCreate.class)
+    @Pattern(message = "{user.login.pattern}",
+            regexp = "^([A-Za-z]+\\d*){3,15}$")
     private String login;
 
-    @Pattern(message = "user.password.pattern",
+    @Pattern(message = "{user.password.pattern}",
             regexp = "^[A-Za-z][A-Za-z\\d_-]{5,15}$")
-    @NotBlank(message = "user.password.notBlank", groups = OnCreate.class)
+    @NotBlank(message = "{user.password.notBlank}", groups = OnCreate.class)
     private String password;
 
-    @Pattern(message = "user.repeatPassword.pattern",
+    @Pattern(message = "{user.repeatPassword.pattern}",
             regexp = "^[A-Za-z][A-Za-z\\d_-]{5,15}$")
-    @NotBlank(message = "user.repeatPassword.notBlank", groups = OnCreate.class)
+    @NotBlank(message = "{user.repeatPassword.notBlank}", groups = OnCreate.class)
     private String repeatPassword;
 
     @Valid private UserDetailsDTO userDetails;

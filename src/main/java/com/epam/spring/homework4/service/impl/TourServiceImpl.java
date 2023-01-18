@@ -101,6 +101,7 @@ public class TourServiceImpl implements TourService {
         tour.setId(id);
         Tour tourPlace = tourRepository.getTourById(id);
         tour.setPlaceCount(tourPlace.getPlaceCount());
+        tour.setBurning(tourPlace.isBurning());
         tour = tourRepository.updateTour(tour);
         return tourMapper.mapTourToTourDTO(tour);
     }

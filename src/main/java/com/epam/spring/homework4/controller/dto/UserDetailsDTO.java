@@ -9,16 +9,16 @@ import javax.validation.constraints.*;
 @Builder
 public class UserDetailsDTO {
 
-    @NotBlank(message = "{UserDetails.firstname.notBlank}")
-    @Pattern(regexp = "[A-Z][a-z]{1,49}", message = "{UserDetails.firstname.pattern}")
+    @NotBlank(message = "{userDetails.firstname.notBlank}")
+    @Pattern(regexp = "[A-Z][a-z]{1,49}", message = "{userDetails.firstname.pattern}")
     private String firstname;
 
-    @NotBlank(message = "{UserDetails.lastname.notBlank}")
-    @Pattern(regexp = "[A-Z][a-z]{1,49}", message = "{UserDetails.lastname.pattern}")
+    @NotBlank(message = "{userDetails.lastname.notBlank}")
+    @Pattern(regexp = "[A-Z][a-z]{1,49}", message = "{userDetails.lastname.pattern}")
     private String lastname;
 
-    @NotBlank(message = "{UserDetails.email.notBlank}")
-    @Email(message = "{UserDetails.email.email}")
+    @NotBlank(message = "{userDetails.email.notBlank}")
+    @Email(message = "{userDetails.email.email}")
     private String email;
 
     @NotNull(message = "{userDetails.phone.notNull}")
