@@ -2,6 +2,7 @@ package com.epam.spring.homework4.controller.api;
 
 import com.epam.spring.homework4.controller.dto.OrderDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
+import com.epam.spring.homework4.controller.model.OrderModel;
 import com.epam.spring.homework4.service.model.enums.TourStatus;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public interface OrderAPI {
     @ApiOperation(value = "Get all order", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/order")
-    public List<OrderDTO> getAllOrder();
+    public List<OrderModel> getAllOrder();
 
 
     @ApiImplicitParams({
@@ -38,7 +39,7 @@ public interface OrderAPI {
     @ApiOperation(value = "Get order by order id", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/order/id/{id}")
-    public OrderDTO getOrderByOrderId(@PathVariable int id);
+    public OrderModel getOrderByOrderId(@PathVariable int id);
 
 
     @ApiImplicitParams({
@@ -50,7 +51,7 @@ public interface OrderAPI {
     @ApiOperation(value = "Get orders by tourStatus", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/order/tour/{tourStatus}")
-    public List<OrderDTO> getOrderByTourStatus(@PathVariable TourStatus tourStatus);
+    public List<OrderModel> getOrderByTourStatus(@PathVariable TourStatus tourStatus);
 
 
     @ApiImplicitParams({
@@ -66,7 +67,7 @@ public interface OrderAPI {
     @ApiOperation(value = "Create new order", httpMethod = "POST")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/order")
-    public OrderDTO createOrder(@RequestBody @Validated(OnCreate.class) OrderDTO orderDTO);
+    public OrderModel createOrder(@RequestBody @Validated(OnCreate.class) OrderDTO orderDTO);
 
 
     @ApiImplicitParams({
@@ -79,7 +80,7 @@ public interface OrderAPI {
     @ApiOperation(value = "Update order description", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/order/{id}/description")
-    public OrderDTO updateOrderDescription(@PathVariable int id, @RequestParam String description);
+    public OrderModel updateOrderDescription(@PathVariable int id, @RequestParam String description);
 
 
     @ApiImplicitParams({
@@ -92,7 +93,7 @@ public interface OrderAPI {
     @ApiOperation(value = "Update order price", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/order/{id}/price")
-    public OrderDTO updateOrderPrice(@PathVariable int id, @RequestParam @Min(1) @Max(20) int stepDisCount);
+    public OrderModel updateOrderPrice(@PathVariable int id, @RequestParam @Min(1) @Max(20) int stepDisCount);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "order id identifier"),
@@ -104,5 +105,5 @@ public interface OrderAPI {
     @ApiOperation(value = "Update order status", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/order/{id}/status")
-    public OrderDTO updateOrderStatus(@PathVariable int id, @RequestParam TourStatus tourStatus);
+    public OrderModel updateOrderStatus(@PathVariable int id, @RequestParam TourStatus tourStatus);
 }

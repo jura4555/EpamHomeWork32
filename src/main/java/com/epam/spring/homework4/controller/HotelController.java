@@ -1,10 +1,13 @@
 package com.epam.spring.homework4.controller;
 
 import com.epam.spring.homework4.controller.api.HotelAPI;
+import com.epam.spring.homework4.controller.assembler.HotelAssembler;
 import com.epam.spring.homework4.controller.dto.HotelDTO;
+import com.epam.spring.homework4.controller.model.HotelModel;
 import com.epam.spring.homework4.service.HotelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,35 +18,41 @@ import java.util.List;
 public class HotelController implements HotelAPI {
 
     private final HotelService hotelService;
+    private final HotelAssembler hotelAssembler;
 
     @Override
-    public List<HotelDTO> getAllHotel() {
+    public List<HotelModel> getAllHotel() {
         log.info("[Controller] receiving all hotel");
-        return hotelService.getAllHotel();
+        List<HotelDTO> hotelDTOs = hotelService.getAllHotel();
+        return hotelAssembler.toListModel(hotelDTOs);
     }
 
     @Override
-    public HotelDTO getHotelByName(String name) {
+    public HotelModel getHotelByName(String name) {
         log.info("[Controller] getHolel by name {}", name);
-        return hotelService.getHotelByName(name);
+        HotelDTO hotelDTO = hotelService.getHotelByName(name);
+        return hotelAssembler.toModel(hotelDTO);
     }
 
     @Override
-    public HotelDTO createHotel(HotelDTO hotelDTO) {
+    public HotelModel createHotel(HotelDTO hotelDTO) {
         log.info("[Controller] createHotel");
-        return hotelService.createHotel(hotelDTO);
+        HotelDTO createdHotelDTO = hotelService.createHotel(hotelDTO);
+        return hotelAssembler.toModel(createdHotelDTO);
     }
 
     @Override
-    public HotelDTO updateHotel(int id, HotelDTO hotelDTO) {
+    public HotelModel updateHotel(int id, HotelDTO hotelDTO) {
         log.info("[Controller] updateHotel with all fields {}");
-        return hotelService.updateHotel(id, hotelDTO);
+        HotelDTO updatedHotelDTO = hotelService.updateHotel(id, hotelDTO);
+        return hotelAssembler.toModel(updatedHotelDTO);
     }
 
     @Override
-    public boolean deleteHotel(int id) {
+    public ResponseEntity<Void> deleteHotel(int id) {
         log.info("[Controller] deleteHotel with id {}", id);
-        return hotelService.deleteHotel(id);
+        hotelService.deleteHotel(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

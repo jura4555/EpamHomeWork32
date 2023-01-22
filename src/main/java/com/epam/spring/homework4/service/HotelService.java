@@ -14,5 +14,5 @@ public interface HotelService {
 
     HotelDTO updateHotel(int id, HotelDTO hotelDTO);
 
-    boolean deleteHotel(int hotelId);
+    void deleteHotel(int hotelId);
 }

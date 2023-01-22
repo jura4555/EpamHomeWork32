@@ -4,6 +4,7 @@ import com.epam.spring.homework4.controller.dto.UserDTO;
 import com.epam.spring.homework4.controller.dto.UserDetailsDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
 import com.epam.spring.homework4.controller.dto.validation.group.OnUpdate;
+import com.epam.spring.homework4.controller.model.UserModel;
 import com.epam.spring.homework4.service.model.enums.UserRole;
 import com.epam.spring.homework4.service.model.enums.UserStatus;
 import io.swagger.annotations.*;
@@ -30,7 +31,7 @@ public interface UserAPI {
     @ApiOperation(value = "Get user by login", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/login/{login}")
-    public UserDTO getUserByLogin(@PathVariable String login);
+    public UserModel getUserByLogin(@PathVariable String login);
 
 
     @ApiImplicitParams({
@@ -42,7 +43,7 @@ public interface UserAPI {
     @ApiOperation(value = "Get users by role", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/role/{userRole}")
-    public List<UserDTO> getUserByRole(@PathVariable UserRole userRole);
+    public List<UserModel> getUserByRole(@PathVariable UserRole userRole);
 
 
     @ApiImplicitParams({
@@ -58,7 +59,7 @@ public interface UserAPI {
     @ApiOperation(value = "Create new user", httpMethod = "POST")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/user")
-    public UserDTO createUser(@RequestBody @Validated(OnCreate.class) UserDTO userDTO);
+    public UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDTO userDTO);
 
 
     @ApiImplicitParams({
@@ -76,7 +77,7 @@ public interface UserAPI {
     @ApiOperation(value = "Update information about user", httpMethod = "PUT")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping ("/user/{id}")
-    public UserDTO updateUser(@PathVariable int id, @RequestBody @Validated(OnUpdate.class) UserDTO userDTO);
+    public UserModel updateUser(@PathVariable int id, @RequestBody @Validated(OnUpdate.class) UserDTO userDTO);
 
 
     @ApiImplicitParams({
@@ -89,7 +90,7 @@ public interface UserAPI {
     @ApiOperation(value = "Update user role", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping ("/user/{id}/role")
-    public UserDTO updateUserRole(@PathVariable int id, @RequestParam UserRole userRole);
+    public UserModel updateUserRole(@PathVariable int id, @RequestParam UserRole userRole);
 
 
     @ApiImplicitParams({
@@ -102,7 +103,7 @@ public interface UserAPI {
     @ApiOperation(value = "Update user status", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping ("/user/{id}/status")
-    public UserDTO updateUserStatus(@PathVariable int id, @RequestParam UserStatus userStatus);
+    public UserModel updateUserStatus(@PathVariable int id, @RequestParam UserStatus userStatus);
 
 
     @ApiImplicitParams({

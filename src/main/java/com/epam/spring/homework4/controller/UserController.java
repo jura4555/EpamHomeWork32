@@ -1,10 +1,12 @@
 package com.epam.spring.homework4.controller;
 
 import com.epam.spring.homework4.controller.api.UserAPI;
+import com.epam.spring.homework4.controller.assembler.UserAssembler;
 import com.epam.spring.homework4.controller.dto.UserDTO;
 import com.epam.spring.homework4.controller.dto.UserDetailsDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
 import com.epam.spring.homework4.controller.dto.validation.group.OnUpdate;
+import com.epam.spring.homework4.controller.model.UserModel;
 import com.epam.spring.homework4.service.UserService;
 import com.epam.spring.homework4.service.model.enums.UserRole;
 import com.epam.spring.homework4.service.model.enums.UserStatus;
@@ -23,41 +25,48 @@ import java.util.List;
 public class UserController implements UserAPI {
 
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
     @Override
-    public UserDTO getUserByLogin(String login){
+    public UserModel getUserByLogin(String login){
         log.info("[Controller] getUser by login {}", login);
-        return userService.getUserByLogin(login);
+        UserDTO userDTO = userService.getUserByLogin(login);
+        return userAssembler.toModel(userDTO);
     }
 
     @Override
-    public List<UserDTO> getUserByRole(UserRole userRole) {
+    public List<UserModel> getUserByRole(UserRole userRole) {
         log.info("[Controller] getUser by userRole {}", userRole);
-        return userService.getUserByRole(userRole);
+        List<UserDTO> userDTOs = userService.getUserByRole(userRole);
+        return userAssembler.toListModel(userDTOs);
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDTO){
+    public UserModel createUser(UserDTO userDTO){
         log.info("[Controller] createUser");
-        return userService.createUser(userDTO);
+        UserDTO createdUserDTO = userService.createUser(userDTO);
+        return userAssembler.toModel(createdUserDTO);
     }
 
     @Override
-    public UserDTO updateUser(int id, UserDTO userDTO) {
+    public UserModel updateUser(int id, UserDTO userDTO) {
         log.info("[Controller] updateUser with all fields");
-        return userService.updateUser(id, userDTO);
+        UserDTO updatedUserDTO = userService.updateUser(id, userDTO);
+        return userAssembler.toModel(updatedUserDTO);
     }
 
     @Override
-    public UserDTO updateUserRole(int id, UserRole userRole) {
+    public UserModel updateUserRole(int id, UserRole userRole) {
         log.info("[Controller] updateUser with userRole field");
-        return userService.updateUserRole(id, userRole);
+        UserDTO userDTO = userService.updateUserRole(id, userRole);
+        return userAssembler.toModel(userDTO);
     }
 
     @Override
-    public UserDTO updateUserStatus(int id, UserStatus userStatus) {
+    public UserModel updateUserStatus(int id, UserStatus userStatus) {
         log.info("[Controller] updateUser with userRole field");
-        return userService.updateUserStatus(id, userStatus);
+        UserDTO userDTO = userService.updateUserStatus(id, userStatus);
+        return userAssembler.toModel(userDTO);
     }
 
     @Override

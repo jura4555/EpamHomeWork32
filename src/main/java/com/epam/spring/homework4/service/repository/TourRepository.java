@@ -26,5 +26,5 @@ public interface TourRepository {
 
     Tour updateTour(Tour tour);
 
-    boolean deleteTour(int tourId);
+    void deleteTour(int tourId);
 }

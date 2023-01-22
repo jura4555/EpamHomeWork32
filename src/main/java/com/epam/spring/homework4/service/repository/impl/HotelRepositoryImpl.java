@@ -60,8 +60,8 @@ public class HotelRepositoryImpl implements HotelRepository {
     }
 
     @Override
-    public boolean deleteHotel(int hotelId) {
+    public void deleteHotel(int hotelId) {
         log.info("[Repository] deleteHotel by id {} ", hotelId);
-        return hotels.removeIf(h -> h.getId() == hotelId);
+        hotels.removeIf(h -> h.getId() == hotelId);
     }
 }

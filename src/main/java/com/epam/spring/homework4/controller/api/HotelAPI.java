@@ -1,8 +1,10 @@
 package com.epam.spring.homework4.controller.api;
 
 import com.epam.spring.homework4.controller.dto.HotelDTO;
+import com.epam.spring.homework4.controller.model.HotelModel;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,7 @@ public interface HotelAPI {
     @ApiOperation(value = "Get all hotel", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotel")
-    public List<HotelDTO> getAllHotel();
+    public List<HotelModel> getAllHotel();
 
 
     @ApiImplicitParams({
@@ -35,7 +37,7 @@ public interface HotelAPI {
     @ApiOperation(value = "Get hotel by hotel name", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotel/{name}")
-    public HotelDTO getHotelByName(@PathVariable String name);
+    public HotelModel getHotelByName(@PathVariable String name);
 
 
     @ApiImplicitParams({
@@ -50,7 +52,7 @@ public interface HotelAPI {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/hotel")
-    public HotelDTO createHotel(@RequestBody @Valid HotelDTO hotelDTO);
+    public HotelModel createHotel(@RequestBody @Valid HotelDTO hotelDTO);
 
 
     @ApiImplicitParams({
@@ -68,7 +70,7 @@ public interface HotelAPI {
     @ApiOperation(value = "Update information about hotel", httpMethod = "PUT")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/hotel/{id}")
-    public HotelDTO updateHotel(@PathVariable int id, @RequestBody @Valid HotelDTO hotelDTO);
+    public HotelModel updateHotel(@PathVariable int id, @RequestBody @Valid HotelDTO hotelDTO);
 
 
     @ApiImplicitParams({
@@ -80,7 +82,7 @@ public interface HotelAPI {
     @ApiOperation(value = "Delete hotel", httpMethod = "DELETE")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/hotel/{id}")
-    public boolean deleteHotel(@PathVariable int id);
+    public ResponseEntity<Void> deleteHotel(@PathVariable int id);
 
 
 }

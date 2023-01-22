@@ -126,9 +126,9 @@ public class TourServiceImpl implements TourService {
 
 
     @Override
-    public boolean deleteTour(int tourId) {
+    public void deleteTour(int tourId) {
         log.info("[Service] deleteTour with id {}", tourId);
-        return tourRepository.deleteTour(tourId);
+        tourRepository.deleteTour(tourId);
     }
 
 

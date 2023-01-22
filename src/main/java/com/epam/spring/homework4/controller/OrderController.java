@@ -1,8 +1,11 @@
 package com.epam.spring.homework4.controller;
 
 import com.epam.spring.homework4.controller.api.OrderAPI;
+import com.epam.spring.homework4.controller.assembler.OrderAssembler;
 import com.epam.spring.homework4.controller.dto.OrderDTO;
+import com.epam.spring.homework4.controller.dto.TourDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
+import com.epam.spring.homework4.controller.model.OrderModel;
 import com.epam.spring.homework4.service.OrderService;
 import com.epam.spring.homework4.service.model.enums.TourStatus;
 import lombok.RequiredArgsConstructor;
@@ -22,47 +25,55 @@ import java.util.List;
 public class OrderController implements OrderAPI{
 
     private final OrderService orderService;
+    private final OrderAssembler orderAssembler;
 
     @Override
-    public List<OrderDTO> getAllOrder() {
+    public List<OrderModel> getAllOrder() {
         log.info("[Controller] receiving all orders");
-        return orderService.getAllOrder();
+        List<OrderDTO> orderDTOs = orderService.getAllOrder();
+        return orderAssembler.toModels(orderDTOs);
     }
 
     @Override
-    public OrderDTO getOrderByOrderId(int id) {
+    public OrderModel getOrderByOrderId(int id) {
         log.info("[Controller] getOrder by id {}", id);
-        return orderService.getOrderByOrderId(id);
+        OrderDTO orderDTO = orderService.getOrderByOrderId(id);
+        return orderAssembler.toModel(orderDTO);
     }
 
     @Override
-    public List<OrderDTO> getOrderByTourStatus(TourStatus tourStatus) {
+    public List<OrderModel> getOrderByTourStatus(TourStatus tourStatus) {
         log.info("[Controller] getOrders by tourStatus {}", tourStatus);
-        return orderService.getOrderByTourStatus(tourStatus);
+        List<OrderDTO> orderDTOs = orderService.getOrderByTourStatus(tourStatus);
+        return orderAssembler.toModels(orderDTOs);
     }
 
     @Override
-    public OrderDTO createOrder(OrderDTO orderDTO) {
+    public OrderModel createOrder(OrderDTO orderDTO) {
         log.info("[Controller] createOrder {}");
-        return orderService.createOrder(orderDTO);
+        OrderDTO createdOrderDTO = orderService.createOrder(orderDTO);
+        return orderAssembler.toModel(createdOrderDTO);
     }
 
     @Override
-    public OrderDTO updateOrderDescription(int id, String description) {
+    public OrderModel updateOrderDescription(int id, String description) {
         log.info("[Controller] updateOrder with description fields");
-        return orderService.updateOrderDescription(id, description);
+        OrderDTO updatedOrderDTO = orderService.updateOrderDescription(id, description);
+        return orderAssembler.toModel(updatedOrderDTO);
     }
 
     @Override
-    public OrderDTO updateOrderPrice(int id, int stepDisCount) {
+    public OrderModel updateOrderPrice(int id, int stepDisCount) {
         log.info("[Controller] updateOrder with price fields");
-        return orderService.updateOrderPrice(id, stepDisCount);
+        OrderDTO updatedOrderDTO = orderService.updateOrderPrice(id, stepDisCount);
+        return orderAssembler.toModel(updatedOrderDTO);
     }
 
     @Override
-    public OrderDTO updateOrderStatus(int id, TourStatus tourStatus) {
+    public OrderModel updateOrderStatus(int id, TourStatus tourStatus) {
         log.info("[Controller] updateOrder with tourStatus field");
-        return orderService.updateOrderStatus(id, tourStatus);
+        OrderDTO updatedOrderDTO = orderService.updateOrderStatus(id, tourStatus);
+        return orderAssembler.toModel(updatedOrderDTO);
     }
 
 }

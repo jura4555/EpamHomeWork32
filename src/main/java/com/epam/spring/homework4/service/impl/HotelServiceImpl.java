@@ -55,8 +55,8 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public boolean deleteHotel(int hotelId) {
+    public void deleteHotel(int hotelId) {
         log.info("[Service] deleteHotel with id {}", hotelId);
-        return hotelRepository.deleteHotel(hotelId);
+        hotelRepository.deleteHotel(hotelId);
     }
 }

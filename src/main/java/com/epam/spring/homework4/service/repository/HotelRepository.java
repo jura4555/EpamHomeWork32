@@ -14,7 +14,7 @@ public interface HotelRepository {
 
     Hotel updateHotel(Hotel hotel);
 
-    boolean deleteHotel(int hotelId);
+    void deleteHotel(int hotelId);
 
 
 }

@@ -3,10 +3,12 @@ package com.epam.spring.homework4.controller.api;
 import com.epam.spring.homework4.controller.dto.TourDTO;
 import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
 import com.epam.spring.homework4.controller.dto.validation.group.OnUpdate;
+import com.epam.spring.homework4.controller.model.TourModel;
 import com.epam.spring.homework4.service.model.enums.HotelType;
 import com.epam.spring.homework4.service.model.enums.TourType;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get all tour", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour")
-    public List<TourDTO> getAllTour();
+    public List<TourModel> getAllTour();
 
 
     @ApiImplicitParams({
@@ -41,7 +43,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get tour by tour name", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/name/{name}")
-    public TourDTO getTourByName(@PathVariable String name);
+    public TourModel getTourByName(@PathVariable String name);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "tourType", paramType = "path", required = true, value = "tour type by which tours are searched")
@@ -52,7 +54,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by tour type", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/type/{tourType}")
-    public List<TourDTO> getTourByTourType(@PathVariable TourType tourType);
+    public List<TourModel> getTourByTourType(@PathVariable TourType tourType);
 
 
     @ApiImplicitParams({
@@ -64,7 +66,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by place count", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/count/{count}")
-    public List<TourDTO> getTourByPlaceCount(@PathVariable int count);
+    public List<TourModel> getTourByPlaceCount(@PathVariable int count);
 
 
     @ApiImplicitParams({
@@ -77,7 +79,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by range price", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/price/{minPrice}/{maxPrice}")
-    public List<TourDTO> getTourByPrice(@PathVariable @Positive int minPrice, @PathVariable @Positive int maxPrice);
+    public List<TourModel> getTourByPrice(@PathVariable @Positive int minPrice, @PathVariable @Positive int maxPrice);
 
 
     @ApiImplicitParams({
@@ -89,7 +91,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by hotel type", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/hotel/{hotelType}")
-    public List<TourDTO> getTourByHotelType(@PathVariable HotelType hotelType);
+    public List<TourModel> getTourByHotelType(@PathVariable HotelType hotelType);
 
 
     @ApiImplicitParams({
@@ -105,7 +107,7 @@ public interface TourAPI {
     @ApiOperation(value = "Create new tour", httpMethod = "POST")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/tour")
-    public TourDTO createTour(@RequestBody @Validated(OnCreate.class) TourDTO tourDTO);
+    public TourModel createTour(@RequestBody @Validated(OnCreate.class) TourDTO tourDTO);
 
 
     @ApiImplicitParams({
@@ -123,7 +125,7 @@ public interface TourAPI {
     @ApiOperation(value = "Update information about tour", httpMethod = "PUT")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/tour/{id}")
-    public TourDTO updateTour(@PathVariable int id, @RequestBody @Validated(OnUpdate.class) TourDTO tourDTO);
+    public TourModel updateTour(@PathVariable int id, @RequestBody @Validated(OnUpdate.class) TourDTO tourDTO);
 
 
     @ApiImplicitParams({
@@ -136,7 +138,7 @@ public interface TourAPI {
     @ApiOperation(value = "Update tour burning(field)", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/tour/{id}/burning")
-    public TourDTO updateTourBurning(@PathVariable int id, @RequestParam boolean burning);
+    public TourModel updateTourBurning(@PathVariable int id, @RequestParam boolean burning);
 
 
     @ApiImplicitParams({
@@ -149,7 +151,7 @@ public interface TourAPI {
     @ApiOperation(value = "Set the maximum discount for the tour", httpMethod = "PATCH")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/tour/{id}/maxdiscount")
-    public TourDTO updateTourMaxDisCount(@PathVariable int id, @RequestParam @Min(1) @Max(70) int maxDisCount);
+    public TourModel updateTourMaxDisCount(@PathVariable int id, @RequestParam @Min(1) @Max(70) int maxDisCount);
 
 
     @ApiImplicitParams({
@@ -161,5 +163,5 @@ public interface TourAPI {
     @ApiOperation(value = "Delete tour", httpMethod = "DELETE")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/tour/{id}")
-    public boolean deleteTour(@PathVariable int id);
+    public ResponseEntity<Void> deleteTour(@PathVariable int id);
 }

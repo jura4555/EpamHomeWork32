@@ -119,8 +119,8 @@ public class TourRepositoryImpl implements TourRepository {
     }
 
     @Override
-    public boolean deleteTour(int tourId) {
+    public void deleteTour(int tourId) {
         log.info("[Repository] deleteTour by id {} ", tourId);
-        return tours.removeIf(t -> t.getId() == tourId);
+        tours.removeIf(t -> t.getId() == tourId);
     }
 }

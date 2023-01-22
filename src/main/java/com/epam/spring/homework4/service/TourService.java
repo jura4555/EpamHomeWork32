@@ -28,5 +28,5 @@ public interface TourService {
 
     TourDTO updateTourMaxDisCount(int id, int maxDisCount);
 
-    boolean deleteTour(int tourId);
+    void deleteTour(int tourId);
 }

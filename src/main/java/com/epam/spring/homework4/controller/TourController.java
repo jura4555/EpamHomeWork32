@@ -1,13 +1,16 @@
 package com.epam.spring.homework4.controller;
 
 import com.epam.spring.homework4.controller.api.TourAPI;
+import com.epam.spring.homework4.controller.assembler.TourAssembler;
 import com.epam.spring.homework4.controller.dto.TourDTO;
+import com.epam.spring.homework4.controller.model.TourModel;
 import com.epam.spring.homework4.service.TourService;
 import com.epam.spring.homework4.service.model.enums.HotelType;
 import com.epam.spring.homework4.service.model.enums.TourType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,74 +21,85 @@ import java.util.List;
 public class TourController implements TourAPI {
 
     private final TourService tourService;
-
+    private final TourAssembler tourAssembler;
 
     @Override
-    public List<TourDTO> getAllTour() {
+    public List<TourModel> getAllTour() {
         log.info("[Controller] receiving all tours");
-        return tourService.getAllTour();
+        List<TourDTO> tourDTOs = tourService.getAllTour();
+        return tourAssembler.toModels(tourDTOs);
     }
 
     @Override
-    public TourDTO getTourByName(String name){
+    public TourModel getTourByName(String name){
         log.info("[Controller] getTour by tourName {}", name);
-        return tourService.getTourByName(name);
+        TourDTO tourDTO = tourService.getTourByName(name);
+        return tourAssembler.toModel(tourDTO);
     }
 
     @Override
-    public List<TourDTO> getTourByTourType(TourType tourType) {
+    public List<TourModel> getTourByTourType(TourType tourType) {
         log.info("[Controller] getTours by tourType {}", tourType);
-        return tourService.getTourByTourType(tourType);
+        List<TourDTO> tourDTOs = tourService.getTourByTourType(tourType);
+        return tourAssembler.toModels(tourDTOs);
     }
 
     @Override
-    public List<TourDTO> getTourByPlaceCount(int count) {
+    public List<TourModel> getTourByPlaceCount(int count) {
         log.info("[Controller] getTours by place count {}", count);
-        return tourService.getTourByPlaceCount(count);
+        List<TourDTO> tourDTOs = tourService.getTourByPlaceCount(count);
+        return tourAssembler.toModels(tourDTOs);
     }
 
 
     @Override
-    public List<TourDTO> getTourByPrice(int minPrice, int maxPrice) {
+    public List<TourModel> getTourByPrice(int minPrice, int maxPrice) {
         log.info("[Controller] getTour by price {} ", minPrice + " < my price < " + maxPrice);
-        return tourService.getTourByPrice(minPrice, maxPrice);
+        List<TourDTO> tourDTOs = tourService.getTourByPrice(minPrice, maxPrice);
+        return tourAssembler.toModels(tourDTOs);
     }
 
 
     @Override
-    public List<TourDTO> getTourByHotelType(HotelType hotelType) {
+    public List<TourModel> getTourByHotelType(HotelType hotelType) {
         log.info("[Controller] getTours by HotelType {}", hotelType);
-        return tourService.getTourByHotelType(hotelType);
+        List<TourDTO> tourDTOs = tourService.getTourByHotelType(hotelType);
+        return tourAssembler.toModels(tourDTOs);
     }
 
 
     @Override
-    public TourDTO createTour(TourDTO tourDTO) {
+    public TourModel createTour(TourDTO tourDTO) {
         log.info("[Controller] createTour");
-        return tourService.createTour(tourDTO);
+        TourDTO createdTourDTO = tourService.createTour(tourDTO);
+        return tourAssembler.toModel(createdTourDTO);
     }
 
     @Override
-    public TourDTO updateTour(int id, TourDTO tourDTO) {
+    public TourModel updateTour(int id, TourDTO tourDTO) {
         log.info("[Controller] updateTour with all fields");
-        return tourService.updateTour(id, tourDTO);
+        TourDTO updateTourDTO = tourService.updateTour(id, tourDTO);
+        return tourAssembler.toModel(updateTourDTO);
     }
 
     @Override
-    public TourDTO updateTourBurning(int id, boolean burning) {
+    public TourModel updateTourBurning(int id, boolean burning) {
         log.info("[Controller] updateTour with burning field");
-        return tourService.updateTourBurning(id, burning);
+        TourDTO tourDTO = tourService.updateTourBurning(id, burning);
+        return tourAssembler.toModel(tourDTO);
     }
 
     @Override
-    public TourDTO updateTourMaxDisCount(int id, int maxDisCount) {
+    public TourModel updateTourMaxDisCount(int id, int maxDisCount) {
         log.info("[Controller] updateTour with all fields");
-        return tourService.updateTourMaxDisCount(id, maxDisCount);
+        TourDTO tourDTO = tourService.updateTourMaxDisCount(id, maxDisCount);
+        return tourAssembler.toModel(tourDTO);
     }
 
     @Override
-    public boolean deleteTour(int id) {
+    public ResponseEntity<Void> deleteTour(int id) {
         log.info("[Controller] deleteTour with id {}", id);
-        return tourService.deleteTour(id);
+        tourService.deleteTour(id);
+        return ResponseEntity.noContent().build();
     }
 }
