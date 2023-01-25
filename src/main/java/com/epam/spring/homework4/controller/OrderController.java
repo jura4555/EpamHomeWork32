@@ -3,20 +3,13 @@ package com.epam.spring.homework4.controller;
 import com.epam.spring.homework4.controller.api.OrderAPI;
 import com.epam.spring.homework4.controller.assembler.OrderAssembler;
 import com.epam.spring.homework4.controller.dto.OrderDTO;
-import com.epam.spring.homework4.controller.dto.TourDTO;
-import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
 import com.epam.spring.homework4.controller.model.OrderModel;
 import com.epam.spring.homework4.service.OrderService;
 import com.epam.spring.homework4.service.model.enums.TourStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Slf4j

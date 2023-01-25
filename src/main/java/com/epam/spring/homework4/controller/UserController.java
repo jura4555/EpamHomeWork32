@@ -4,19 +4,14 @@ import com.epam.spring.homework4.controller.api.UserAPI;
 import com.epam.spring.homework4.controller.assembler.UserAssembler;
 import com.epam.spring.homework4.controller.dto.UserDTO;
 import com.epam.spring.homework4.controller.dto.UserDetailsDTO;
-import com.epam.spring.homework4.controller.dto.validation.group.OnCreate;
-import com.epam.spring.homework4.controller.dto.validation.group.OnUpdate;
 import com.epam.spring.homework4.controller.model.UserModel;
 import com.epam.spring.homework4.service.UserService;
 import com.epam.spring.homework4.service.model.enums.UserRole;
 import com.epam.spring.homework4.service.model.enums.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
