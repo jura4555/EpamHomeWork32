@@ -1,0 +1,17 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  application:
+    name: Spring Travel Agency Application
+    description: Spring Application for providing tour for client.
+    version: 1.0.0
+
+server:
+  port: 8082
