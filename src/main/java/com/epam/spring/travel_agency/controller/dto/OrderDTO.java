@@ -3,8 +3,11 @@ package com.epam.spring.travel_agency.controller.dto;
 import com.epam.spring.travel_agency.controller.dto.validation.ValidDescription;
 import com.epam.spring.travel_agency.controller.dto.validation.group.OnCreate;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -12,6 +15,9 @@ import javax.validation.constraints.Null;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
     private int id;

@@ -74,7 +74,7 @@ public class TourRepositoryImpl implements TourRepository {
     public List<Tour> getTourByPrice(int minPrice, int maxPrice) {
         log.info("[Repository] getTour by price {} ", minPrice + " < my price < " + maxPrice);
         List<Tour> myTours = tours.stream()
-                .filter(t -> t.getPrice() > minPrice && t.getPrice() < maxPrice)
+                .filter(t -> t.getPrice() >= minPrice && t.getPrice() <= maxPrice)
                 .collect(Collectors.toList());
         if(myTours.isEmpty()){
             throw new TourNotFoundException();

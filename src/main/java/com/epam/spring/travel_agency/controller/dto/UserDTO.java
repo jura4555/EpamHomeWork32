@@ -4,8 +4,10 @@ import com.epam.spring.travel_agency.controller.dto.validation.group.OnCreate;
 import com.epam.spring.travel_agency.service.model.enums.UserRole;
 import com.epam.spring.travel_agency.service.model.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +16,8 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
 

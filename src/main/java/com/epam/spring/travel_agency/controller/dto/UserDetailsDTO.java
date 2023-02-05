@@ -1,12 +1,16 @@
 package com.epam.spring.travel_agency.controller.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDetailsDTO {
 
     @NotBlank(message = "{userDetails.firstname.notBlank}")

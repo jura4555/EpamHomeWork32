@@ -6,14 +6,20 @@ import com.epam.spring.travel_agency.controller.dto.validation.group.OnUpdate;
 import com.epam.spring.travel_agency.service.model.enums.TourType;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TourDTO {
 
     private int id;
@@ -52,7 +58,6 @@ public class TourDTO {
     @NotNull(message = "{tour.tourType.notNull}")
     private TourType tourType;
 
-    @ValidBurning(message = "{tour.burning.validBurning}", groups = OnCreate.class)
-    @Null(message = "{tour.burning.null}", groups = OnUpdate.class)
+    @ValidBurning(message = "{tour.burning.validBurning}")
     private boolean burning;
 }
