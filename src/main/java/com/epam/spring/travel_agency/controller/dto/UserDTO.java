@@ -40,9 +40,9 @@ public class UserDTO {
 
     @Valid private UserDetailsDTO userDetails;
 
-    @Null(message = "{user.role.null}", groups = OnCreate.class)
+    @Null(message = "{user.role.null}")
     private UserRole userRole;
 
-    @Null(message = "{user.status.null}", groups = OnCreate.class)
+    @Null(message = "{user.status.null}")
     private UserStatus userStatus;
 }

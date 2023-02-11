@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = "User management API")
@@ -77,7 +78,7 @@ public interface UserAPI {
     @ApiOperation(value = "Update information about user", httpMethod = "PUT")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping ("/user/{id}")
-    public UserModel updateUser(@PathVariable int id, @RequestBody @Validated(OnUpdate.class) UserDTO userDTO);
+    public UserModel updateUser(@PathVariable int id, @RequestBody @Valid UserDTO userDTO);
 
 
     @ApiImplicitParams({

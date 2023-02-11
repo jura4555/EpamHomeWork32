@@ -13,5 +13,25 @@ info:
     description: Spring Application for providing tour for client.
     version: 1.0.0
 
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_db_agency
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
 server:
   port: 8082
