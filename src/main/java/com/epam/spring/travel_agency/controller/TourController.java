@@ -53,7 +53,7 @@ public class TourController implements TourAPI {
 
 
     @Override
-    public List<TourModel> getTourByPrice(int minPrice, int maxPrice) {
+    public List<TourModel> getTourByPrice(double minPrice, double maxPrice) {
         log.info("[Controller] getTour by price {} ", minPrice + " < my price < " + maxPrice);
         List<TourDTO> tourDTOs = tourService.getTourByPrice(minPrice, maxPrice);
         return tourAssembler.toModels(tourDTOs);

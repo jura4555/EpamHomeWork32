@@ -79,7 +79,7 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by range price", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/price/{minPrice}/{maxPrice}")
-    public List<TourModel> getTourByPrice(@PathVariable @Positive int minPrice, @PathVariable @Positive int maxPrice);
+    public List<TourModel> getTourByPrice(@PathVariable @Positive double minPrice, @PathVariable @Positive double maxPrice);
 
 
     @ApiImplicitParams({

@@ -16,7 +16,7 @@ public interface TourService {
 
     List<TourDTO> getTourByPlaceCount(int count);
 
-    List<TourDTO> getTourByPrice(int minPrice, int maxPrice);
+    List<TourDTO> getTourByPrice(double minPrice, double maxPrice);
 
     List<TourDTO> getTourByHotelType(HotelType hotelType);
 

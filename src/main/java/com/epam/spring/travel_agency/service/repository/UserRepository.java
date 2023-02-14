@@ -12,10 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    boolean existsById(int id);
-
     boolean existsByLogin(String login);
-
 
     Optional<User> findById(int id);
 

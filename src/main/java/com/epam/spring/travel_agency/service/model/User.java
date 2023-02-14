@@ -27,15 +27,15 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_details_id", nullable = false, unique = true)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "user_details_id", unique = true)
     private UserDetails userDetails;
 
-    @Column(name = "user_role_id")
+    @Column(name = "user_role_id", nullable = false)
     @Convert(converter = UserRoleConverter.class)
     private UserRole userRole;
 
-    @Column(name = "user_status_id")
+    @Column(name = "user_status_id", nullable = false)
     @Convert(converter = UserStatusConverter.class)
     private UserStatus userStatus;
 

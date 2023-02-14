@@ -1,20 +1,20 @@
 package com.epam.spring.travel_agency.service.repository;
 
 import com.epam.spring.travel_agency.service.model.Hotel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface HotelRepository {
+@Repository
+public interface HotelRepository extends JpaRepository<Hotel, Integer> {
 
-    List<Hotel> getAllHotel();
+    Optional<Hotel> findByName(String name);
 
-    Hotel getHotelByName(String hotelName);
+    boolean existsById(int id);
 
-    Hotel createHotel(Hotel hotel);
+    boolean existsByNameAndCity(String name, String city);
 
-    Hotel updateHotel(Hotel hotel);
-
-    void deleteHotel(int hotelId);
-
-
+    boolean existsByName(String name);
 }
