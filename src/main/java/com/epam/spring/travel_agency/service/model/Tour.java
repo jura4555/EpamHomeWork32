@@ -3,6 +3,7 @@ package com.epam.spring.travel_agency.service.model;
 import com.epam.spring.travel_agency.service.model.converter.LocalDateConverter;
 import com.epam.spring.travel_agency.service.model.converter.TourTypeConverter;
 import com.epam.spring.travel_agency.service.model.enums.TourType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder

@@ -2,8 +2,7 @@ package com.epam.spring.travel_agency.service.impl;
 
 import com.epam.spring.travel_agency.controller.dto.OrderDTO;
 import com.epam.spring.travel_agency.service.OrderService;
-import com.epam.spring.travel_agency.service.exception.MaxDisCountNotFound;
-import com.epam.spring.travel_agency.service.exception.PriceNotFoundException;
+import com.epam.spring.travel_agency.service.exception.*;
 import com.epam.spring.travel_agency.service.mapper.OrderMapper;
 import com.epam.spring.travel_agency.service.model.Order;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -29,16 +29,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getAllOrder() {
         log.info("[Service] receiving all orders");
-        return orderRepository.getAllOrder().stream()
+        return orderRepository.findAll().stream()
                 .map(orderMapper::mapOrderToOrderDTO)
                 .sorted(Comparator.comparing(OrderDTO::getId))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());//+
     }
 
     @Override
     public List<OrderDTO> getOrderByTourStatus(TourStatus tourStatus) {
         log.info("[Service] getOrders by tourStatus {}", tourStatus);
-        List<Order> myOrder = orderRepository.getOrderByTourStatus(tourStatus);
+        List<Order> myOrder = orderRepository.findByTourStatus(tourStatus);
         return myOrder.stream()
                 .map(orderMapper::mapOrderToOrderDTO)
                 .sorted(Comparator.comparing(OrderDTO::getId))
@@ -48,7 +48,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO getOrderByOrderId(int orderId) {
         log.info("[Service] getOrder by id {}", orderId);
-        Order order = orderRepository.getOrderByOrderId(orderId);
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if(optionalOrder.isEmpty()){
+            throw new OrderNotFoundException();
+        }
+        Order order = optionalOrder.get();
         return orderMapper.mapOrderToOrderDTO(order);
     }
 
@@ -56,23 +60,32 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO createOrder(OrderDTO orderDTO) {
         log.info("[Service] createOrder");
         Order order = orderMapper.mapOrderDTOToOrder(orderDTO);
-        order = orderRepository.createOrder(order);
+        order.setTourStatus(TourStatus.REGISTERED);
+        order = orderRepository.save(order);
         return orderMapper.mapOrderToOrderDTO(order);
     }
 
     @Override
     public OrderDTO updateOrderDescription(int id, String description) {
         log.info("[Service] updateOrder with description fields");
-        Order order = orderRepository.getOrderByOrderId(id);
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if(optionalOrder.isEmpty()){
+            throw new OrderNotFoundException();
+        }
+        Order order = optionalOrder.get();
         order.setDescription(description);
-        order = orderRepository.updateOrder(order);
+        order = orderRepository.save(order);
         return orderMapper.mapOrderToOrderDTO(order);
     }
 
     @Override
     public OrderDTO updateOrderPrice(int id, int stepDisCount) {
         log.info("[Service] updateOrder with price fields");
-        Order order = orderRepository.getOrderByOrderId(id);
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if(optionalOrder.isEmpty()){
+            throw new OrderNotFoundException();
+        }
+        Order order = optionalOrder.get();
         int maxDisCount = order.getTour().getMaxDisCount();
         if(maxDisCount == 0){
             throw new MaxDisCountNotFound();
@@ -85,22 +98,29 @@ public class OrderServiceImpl implements OrderService {
         order.setStepDisCount(stepDisCount);
         order.setDisCount(discount);
         order.setPrice(price);
-        order = orderRepository.updateOrder(order);
+        order = orderRepository.save(order);
         return orderMapper.mapOrderToOrderDTO(order);
     }
 
     @Override
     public OrderDTO updateOrderStatus(int id, TourStatus tourStatus) {
         log.info("[Service] updateOrder with tourStatus fields");
-        Order order = orderRepository.getOrderByOrderId(id);
+        Optional<Order> optionalOrder = orderRepository.findById(id);
+        if(optionalOrder.isEmpty()){
+            throw new OrderNotFoundException();
+        }
+        Order order = optionalOrder.get();
         if(order.getPrice() == 0){
             throw new PriceNotFoundException();
+        }
+        if(order.getTourStatus() == TourStatus.CANCELED || order.getTourStatus() == TourStatus.PAID){
+            throw new OrderStatusException();
         }
         if(tourStatus == TourStatus.PAID){
             order.getTour().setPlaceCount(order.getTour().getPlaceCount() -1);
         }
         order.setTourStatus(tourStatus);
-        order = orderRepository.updateOrder(order);
+        order = orderRepository.save(order);
         return orderMapper.mapOrderToOrderDTO(order);
     }
 

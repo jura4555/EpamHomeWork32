@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
@@ -39,5 +40,7 @@ public class User {
     @Convert(converter = UserStatusConverter.class)
     private UserStatus userStatus;
 
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
 }

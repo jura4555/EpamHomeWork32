@@ -1,21 +1,16 @@
 package com.epam.spring.travel_agency.service.repository;
 
+
 import com.epam.spring.travel_agency.service.model.Order;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface OrderRepository {
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 
-    List<Order> getAllOrder();
-
-    List<Order> getOrderByTourStatus(TourStatus tourStatus);
-
-    Order getOrderByOrderId(int orderId);
-
-    Order createOrder(Order order);
-
-    Order updateOrder(Order order);
-
+    List<Order> findByTourStatus(TourStatus tourStatus);
 
 }
