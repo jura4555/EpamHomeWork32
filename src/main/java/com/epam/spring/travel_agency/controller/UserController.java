@@ -10,6 +10,7 @@ import com.epam.spring.travel_agency.service.model.enums.UserRole;
 import com.epam.spring.travel_agency.service.model.enums.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,10 +31,11 @@ public class UserController implements UserAPI {
     }
 
     @Override
-    public List<UserModel> getUserByRole(UserRole userRole) {
+    public Page<UserModel> getUserByRole(UserRole userRole, int page, int size, String sortBy, String order) {
         log.info("[Controller] getUser by userRole {}", userRole);
-        List<UserDTO> userDTOs = userService.getUserByRole(userRole);
-        return userAssembler.toListModel(userDTOs);
+        Page<UserDTO> userDTOs = userService.getUserByRole(userRole, page, size, sortBy, order);
+        Page<UserModel> userModels = userDTOs.map(userAssembler::toModel);
+        return userModels;
     }
 
     @Override

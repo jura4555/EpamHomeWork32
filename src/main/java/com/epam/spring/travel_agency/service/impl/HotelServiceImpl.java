@@ -9,6 +9,10 @@ import com.epam.spring.travel_agency.service.model.Hotel;
 import com.epam.spring.travel_agency.service.repository.HotelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -25,13 +29,13 @@ public class HotelServiceImpl implements HotelService {
     private final HotelMapper hotelMapper;
 
     @Override
-    public List<HotelDTO> getAllHotel() {
+    public Page<HotelDTO> getAllHotel(int page, int size, String sortBy, String order) {
         log.info("[Service] receiving all hotel");
-        List<Hotel> hotels = hotelRepository.findAll();
-        return hotels.stream()
-                .map(hotelMapper::mapHotelToHotelDto)
-                .sorted(Comparator.comparing(HotelDTO::getName))
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page - 1, size,
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+        Page<HotelDTO> hotels = hotelRepository.findAll(pageable).map(hotelMapper::mapHotelToHotelDto);
+        return hotels;
     }
 
     @Override

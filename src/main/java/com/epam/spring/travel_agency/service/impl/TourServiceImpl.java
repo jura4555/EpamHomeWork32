@@ -12,6 +12,7 @@ import com.epam.spring.travel_agency.service.model.enums.TourType;
 import com.epam.spring.travel_agency.service.repository.TourRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -29,14 +30,26 @@ public class TourServiceImpl implements TourService {
     private final TourMapper tourMapper;
 
     @Override
-    public List<TourDTO> getAllTour() {
+    public Page<TourDTO> getAllTour(int page, int size, String sortBy, String order) {
         log.info("[Service] receiving all tours");
-        List<Tour> myTour = tourRepository.findAll();
-        return myTour.stream()
+        List<Tour> tours = tourRepository.findAll();
+
+        Pageable pageableSorted = PageRequest.of(0, tours.size(),
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+
+        Page<Tour> pageAllTour = tourRepository.findAll(pageableSorted);
+
+        List<TourDTO> myTour = pageAllTour.getContent().stream()
                 .map(tourMapper::mapTourToTourDTO)
-                .sorted(Comparator.comparing(TourDTO::getName))
                 .sorted(Comparator.comparing(TourDTO -> !TourDTO.isBurning()))
                 .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), myTour.size());
+        Page <TourDTO> tourDTOS = new PageImpl<>(myTour.subList(start, end), pageable, myTour.size());
+        return tourDTOS;
     }
 
     @Override
@@ -47,48 +60,95 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public List<TourDTO> getTourByTourType(TourType tourType) {
+    public Page<TourDTO> getTourByTourType(TourType tourType, int page, int size, String sortBy, String order) {
         log.info("[Service] getTours by tourType {}", tourType);
-        List<Tour> myTour = tourRepository.findByTourType(tourType);
-        return myTour.stream()
+        List<Tour> tours = tourRepository.findByTourType(tourType);
+
+        Pageable pageableSorted = PageRequest.of(0, tours.size(),
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+
+        Page<Tour> pageAllTour = tourRepository.findByTourType(tourType, pageableSorted);
+
+        List<TourDTO> myTour = pageAllTour.getContent().stream()
                 .map(tourMapper::mapTourToTourDTO)
-                .sorted(Comparator.comparing(TourDTO::getName))
                 .sorted(Comparator.comparing(TourDTO -> !TourDTO.isBurning()))
                 .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), myTour.size());
+        Page <TourDTO> tourDTOS = new PageImpl<>(myTour.subList(start, end), pageable, myTour.size());
+        return tourDTOS;
     }
 
     @Override
-    public List<TourDTO> getTourByPlaceCount(int count) {
+    public Page<TourDTO> getTourByPlaceCount(int count, int page, int size, String sortBy, String order) {
         log.info("[Service] getTours by place count {}", count);
-        List<Tour> myTour = tourRepository.findByPlaceCount(count);
-        return myTour.stream()
+        List<Tour> tours = tourRepository.findByPlaceCount(count);
+
+        Pageable pageableSorted = PageRequest.of(0, tours.size(),
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+
+        Page<Tour> pageAllTour = tourRepository.findByPlaceCount(count, pageableSorted);
+
+        List<TourDTO> myTour = pageAllTour.getContent().stream()
                 .map(tourMapper::mapTourToTourDTO)
-                .sorted(Comparator.comparing(TourDTO::getName))
                 .sorted(Comparator.comparing(TourDTO -> !TourDTO.isBurning()))
                 .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), myTour.size());
+        Page <TourDTO> tourDTOS = new PageImpl<>(myTour.subList(start, end), pageable, myTour.size());
+        return tourDTOS;
     }
 
     @Override
-    public List<TourDTO> getTourByPrice(double minPrice, double maxPrice) {
+    public Page<TourDTO> getTourByPrice(double minPrice, double maxPrice, int page, int size, String sortBy, String order) {
         log.info("[Service] getTour by price {} ", minPrice + " < my price < " + maxPrice);
-        List<Tour> myTour = tourRepository.findByPrice(minPrice,maxPrice);
-        return myTour.stream()
+        List<Tour> tours = tourRepository.findByPrice(minPrice, maxPrice);
+
+        Pageable pageableSorted = PageRequest.of(0, tours.size(),
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+
+        Page<Tour> pageAllTour = tourRepository.findByPrice(minPrice, maxPrice, pageableSorted);
+
+        List<TourDTO> myTour = pageAllTour.getContent().stream()
                 .map(tourMapper::mapTourToTourDTO)
-                .sorted(Comparator.comparing(TourDTO::getName))
-                .sorted(Comparator.comparing(TourDTO::getPrice))
                 .sorted(Comparator.comparing(TourDTO -> !TourDTO.isBurning()))
                 .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), myTour.size());
+        Page <TourDTO> tourDTOS = new PageImpl<>(myTour.subList(start, end), pageable, myTour.size());
+        return tourDTOS;
     }
 
     @Override
-    public List<TourDTO> getTourByHotelType(HotelType hotelType) {
+    public Page<TourDTO> getTourByHotelType(HotelType hotelType, int page, int size, String sortBy, String order) {
         log.info("[Service] getTours by HotelType {}", hotelType);
-        List<Tour> myTour = tourRepository.findByHotelType(hotelType);
-        return myTour.stream()
+        List<Tour> tours = tourRepository.findByHotelType(hotelType);
+
+        Pageable pageableSorted = PageRequest.of(0, tours.size(),
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+
+        Page<Tour> pageAllTour = tourRepository.findByHotelType(hotelType, pageableSorted);
+
+        List<TourDTO> myTour = pageAllTour.getContent().stream()
                 .map(tourMapper::mapTourToTourDTO)
-                .sorted(Comparator.comparing(TourDTO::getName))
                 .sorted(Comparator.comparing(TourDTO -> !TourDTO.isBurning()))
                 .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), myTour.size());
+        Page <TourDTO> tourDTOS = new PageImpl<>(myTour.subList(start, end), pageable, myTour.size());
+        return tourDTOS;
     }
 
     @Override

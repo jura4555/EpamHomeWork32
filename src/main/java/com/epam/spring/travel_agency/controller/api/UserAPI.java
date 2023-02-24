@@ -8,11 +8,14 @@ import com.epam.spring.travel_agency.controller.model.UserModel;
 import com.epam.spring.travel_agency.service.model.enums.UserRole;
 import com.epam.spring.travel_agency.service.model.enums.UserStatus;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Api(tags = "User management API")
@@ -36,7 +39,11 @@ public interface UserAPI {
 
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userRole", paramType = "path", required = true, value = "user role")
+            @ApiImplicitParam(name = "userRole", paramType = "path", required = true, value = "user role"),
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get users by role")
@@ -44,7 +51,21 @@ public interface UserAPI {
     @ApiOperation(value = "Get users by role", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/role/{userRole}")
-    public List<UserModel> getUserByRole(@PathVariable UserRole userRole);
+    public Page<UserModel> getUserByRole(@PathVariable UserRole userRole,
+                                        @RequestParam(defaultValue = "1")
+                                        @Min(value = 1, message = "page should be greater or equals one")
+                                        int page,
+                                        @RequestParam(defaultValue = "5")
+                                        @Min(value = 1, message = "page should be greater or equals one")
+                                        int size,
+                                        @RequestParam(defaultValue = "id")
+                                        @Pattern(regexp = "id|login",
+                                                message = "sortBy should be equal 'id' or 'login'")
+                                        String sortBy,
+                                        @RequestParam(defaultValue = "asc")
+                                        @Pattern(regexp = "asc|desc",
+                                                message = "order should be equal 'asc' or 'desc'")
+                                        String order);
 
 
     @ApiImplicitParams({

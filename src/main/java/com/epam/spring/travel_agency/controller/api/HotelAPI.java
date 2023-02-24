@@ -3,12 +3,15 @@ package com.epam.spring.travel_agency.controller.api;
 import com.epam.spring.travel_agency.controller.dto.HotelDTO;
 import com.epam.spring.travel_agency.controller.model.HotelModel;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Api(tags = "Hotel management API")
@@ -19,17 +22,36 @@ import java.util.List;
 @Validated
 public interface HotelAPI {
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")}
+    )
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get all hotel")
     })
     @ApiOperation(value = "Get all hotel", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotel")
-    public List<HotelModel> getAllHotel();
+    public Page<HotelModel> getAllHotel(@RequestParam(defaultValue = "1")
+                                        @Min(value = 1, message = "page should be greater or equals one")
+                                        int page,
+                                        @RequestParam(defaultValue = "5")
+                                        @Min(value = 1, message = "page should be greater or equals one")
+                                        int size,
+                                        @RequestParam(defaultValue = "id")
+                                        @Pattern(regexp = "id|name|city",
+                                                message = "sortBy should be equal 'id', name' or 'city")
+                                        String sortBy,
+                                        @RequestParam(defaultValue = "asc")
+                                        @Pattern(regexp = "asc|desc",
+                                                message = "order should be equal 'asc' or 'desc'")
+                                        String order);
 
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "name", paramType = "path", required = true, value = "hotel name by which hotel are searched")
+            @ApiImplicitParam(name = "name", paramType = "path", required = true, value = "hotel name by which hotel are searched"),
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get hotel by name")

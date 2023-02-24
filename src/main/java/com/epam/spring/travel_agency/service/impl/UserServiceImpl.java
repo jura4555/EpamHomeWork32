@@ -14,6 +14,10 @@ import com.epam.spring.travel_agency.service.repository.UserDetailsRepository;
 import com.epam.spring.travel_agency.service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -42,13 +46,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getUserByRole(UserRole userRole) {
+    public Page<UserDTO> getUserByRole(UserRole userRole, int page, int size, String sortBy, String order) {
         log.info("[Service] getUsers by userRole {}", userRole);
-        List<User> myUser = userRepository.findByUserRole(userRole);
-        return myUser.stream()
-                .map(userMapper::mapUserToUserDTO)
-                .sorted(Comparator.comparing(UserDTO::getLogin))
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page - 1, size,
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+        Page<UserDTO> myUser = userRepository.findByUserRole(userRole, pageable).map(userMapper::mapUserToUserDTO);
+        return myUser;
     }
 
     @Override

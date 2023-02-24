@@ -7,6 +7,7 @@ import com.epam.spring.travel_agency.controller.model.HotelModel;
 import com.epam.spring.travel_agency.service.HotelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,11 @@ public class HotelController implements HotelAPI {
     private final HotelAssembler hotelAssembler;
 
     @Override
-    public List<HotelModel> getAllHotel() {
+    public Page<HotelModel> getAllHotel(int page, int size, String sortBy, String order) {
         log.info("[Controller] receiving all hotel");
-        List<HotelDTO> hotelDTOs = hotelService.getAllHotel();
-        return hotelAssembler.toListModel(hotelDTOs);
+        Page<HotelDTO> hotelDTOs = hotelService.getAllHotel(page, size, sortBy, order);
+        Page<HotelModel> hotelModels = hotelDTOs.map(hotelAssembler::toModel);
+        return hotelModels;
     }
 
     @Override

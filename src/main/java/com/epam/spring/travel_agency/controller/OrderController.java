@@ -8,6 +8,7 @@ import com.epam.spring.travel_agency.service.OrderService;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +22,11 @@ public class OrderController implements OrderAPI {
     private final OrderAssembler orderAssembler;
 
     @Override
-    public List<OrderModel> getAllOrder() {
+    public Page<OrderModel> getAllOrder(int page, int size, String sortBy, String order) {
         log.info("[Controller] receiving all orders");
-        List<OrderDTO> orderDTOs = orderService.getAllOrder();
-        return orderAssembler.toModels(orderDTOs);
+        Page<OrderDTO> orderDTOs = orderService.getAllOrder(page, size, sortBy, order);
+        Page<OrderModel> orderModels = orderDTOs.map(orderAssembler::toModel);
+        return orderModels;
     }
 
     @Override
@@ -35,10 +37,11 @@ public class OrderController implements OrderAPI {
     }
 
     @Override
-    public List<OrderModel> getOrderByTourStatus(TourStatus tourStatus) {
+    public Page<OrderModel> getOrderByTourStatus(TourStatus tourStatus, int page, int size, String sortBy, String order) {
         log.info("[Controller] getOrders by tourStatus {}", tourStatus);
-        List<OrderDTO> orderDTOs = orderService.getOrderByTourStatus(tourStatus);
-        return orderAssembler.toModels(orderDTOs);
+        Page<OrderDTO> orderDTOs = orderService.getOrderByTourStatus(tourStatus, page, size, sortBy, order);
+        Page<OrderModel> orderModels = orderDTOs.map(orderAssembler::toModel);
+        return orderModels;
     }
 
     @Override

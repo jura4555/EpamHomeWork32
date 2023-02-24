@@ -7,6 +7,7 @@ import com.epam.spring.travel_agency.controller.model.TourModel;
 import com.epam.spring.travel_agency.service.model.enums.HotelType;
 import com.epam.spring.travel_agency.service.model.enums.TourType;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -25,13 +27,33 @@ import java.util.List;
 @Validated
 public interface TourAPI {
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")}
+    )
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get all tour")
     })
     @ApiOperation(value = "Get all tour", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour")
-    public List<TourModel> getAllTour();
+    public Page<TourModel> getAllTour(@RequestParam(defaultValue = "1")
+                                     @Min(value = 1, message = "page should be greater or equals one")
+                                     int page,
+                                     @RequestParam(defaultValue = "5")
+                                     @Min(value = 1, message = "page should be greater or equals one")
+                                     int size,
+                                     @RequestParam(defaultValue = "id")
+                                     @Pattern(regexp = "id|name|price|placeCount|",
+                                             message = "sortBy should be equal 'id' ,'name', 'price'" +
+                                                     "or placeCount")
+                                          String sortBy,
+                                     @RequestParam(defaultValue = "asc")
+                                     @Pattern(regexp = "asc|desc",
+                                             message = "order should be equal 'asc' or 'desc'")
+                                     String order);
 
 
     @ApiImplicitParams({
@@ -45,8 +67,13 @@ public interface TourAPI {
     @GetMapping("/tour/name/{name}")
     public TourModel getTourByName(@PathVariable String name);
 
+
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "tourType", paramType = "path", required = true, value = "tour type by which tours are searched")
+            @ApiImplicitParam(name = "tourType", paramType = "path", required = true, value = "tour type by which tours are searched"),
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get tours by tour type")
@@ -54,11 +81,30 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by tour type", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/type/{tourType}")
-    public List<TourModel> getTourByTourType(@PathVariable TourType tourType);
+    public Page<TourModel> getTourByTourType(@PathVariable TourType tourType,
+                                            @RequestParam(defaultValue = "1")
+                                            @Min(value = 1, message = "page should be greater or equals one")
+                                            int page,
+                                            @RequestParam(defaultValue = "5")
+                                            @Min(value = 1, message = "page should be greater or equals one")
+                                            int size,
+                                            @RequestParam(defaultValue = "id")
+                                            @Pattern(regexp = "id|name|price|placeCount",
+                                                    message = "sortBy should be equal 'id' ,'name', 'price'" +
+                                                            "or placeCount")
+                                            String sortBy,
+                                            @RequestParam(defaultValue = "asc")
+                                            @Pattern(regexp = "asc|desc",
+                                                    message = "order should be equal 'asc' or 'desc'")
+                                            String order);
 
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "count", paramType = "path", required = true, value = "place count by which tours are searched")
+            @ApiImplicitParam(name = "count", paramType = "path", required = true, value = "place count by which tours are searched"),
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get tours by place count")
@@ -66,12 +112,30 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by place count", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/count/{count}")
-    public List<TourModel> getTourByPlaceCount(@PathVariable int count);
+    public Page<TourModel> getTourByPlaceCount(@PathVariable int count,
+                                               @RequestParam(defaultValue = "1")
+                                               @Min(value = 1, message = "page should be greater or equals one")
+                                               int page,
+                                               @RequestParam(defaultValue = "5")
+                                               @Min(value = 1, message = "page should be greater or equals one")
+                                               int size,
+                                               @RequestParam(defaultValue = "id")
+                                               @Pattern(regexp = "id|name|price",
+                                               message = "sortBy should be equal 'id' ,'name' or 'price'")
+                                               String sortBy,
+                                               @RequestParam(defaultValue = "asc")
+                                               @Pattern(regexp = "asc|desc",
+                                                        message = "order should be equal 'asc' or 'desc'")
+                                               String order);
 
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "minPrice", paramType = "path", required = true, value = "lower price range"),
-            @ApiImplicitParam(name = "maxPrice", paramType = "path", required = true, value = "upper price range")
+            @ApiImplicitParam(name = "maxPrice", paramType = "path", required = true, value = "upper price range"),
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get tours by range price")
@@ -79,11 +143,30 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by range price", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/price/{minPrice}/{maxPrice}")
-    public List<TourModel> getTourByPrice(@PathVariable @Positive double minPrice, @PathVariable @Positive double maxPrice);
-
+    public Page<TourModel> getTourByPrice(@PathVariable @Positive double minPrice,
+                                          @PathVariable @Positive double maxPrice,
+                                          @RequestParam(defaultValue = "1")
+                                          @Min(value = 1, message = "page should be greater or equals one")
+                                          int page,
+                                          @RequestParam(defaultValue = "5")
+                                          @Min(value = 1, message = "page should be greater or equals one")
+                                          int size,
+                                          @RequestParam(defaultValue = "id")
+                                          @Pattern(regexp = "id|name|price|placeCount",
+                                          message = "sortBy should be equal 'id' ,'name', 'price'" +
+                                                     "or placeCount")
+                                          String sortBy,
+                                          @RequestParam(defaultValue = "asc")
+                                          @Pattern(regexp = "asc|desc",
+                                                  message = "order should be equal 'asc' or 'desc'")
+                                          String order);
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "hotelType", paramType = "path", required = true, value = "the type of hotel by which tours are searched")
+            @ApiImplicitParam(name = "hotelType", paramType = "path", required = true, value = "the type of hotel by which tours are searched"),
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get tours by hotel type")
@@ -91,7 +174,22 @@ public interface TourAPI {
     @ApiOperation(value = "Get tours by hotel type", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tour/hotel/{hotelType}")
-    public List<TourModel> getTourByHotelType(@PathVariable HotelType hotelType);
+    public Page<TourModel> getTourByHotelType(@PathVariable HotelType hotelType,
+                                              @RequestParam(defaultValue = "1")
+                                              @Min(value = 1, message = "page should be greater or equals one")
+                                              int page,
+                                              @RequestParam(defaultValue = "5")
+                                              @Min(value = 1, message = "page should be greater or equals one")
+                                              int size,
+                                              @RequestParam(defaultValue = "id")
+                                              @Pattern(regexp = "id|name|price|placeCount",
+                                                       message = "sortBy should be equal 'id' ,'name', 'price'" +
+                                                       "or placeCount")
+                                              String sortBy,
+                                              @RequestParam(defaultValue = "asc")
+                                              @Pattern(regexp = "asc|desc",
+                                                      message = "order should be equal 'asc' or 'desc'")
+                                              String order);
 
 
     @ApiImplicitParams({

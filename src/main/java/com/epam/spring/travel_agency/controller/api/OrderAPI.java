@@ -5,12 +5,14 @@ import com.epam.spring.travel_agency.controller.dto.validation.group.OnCreate;
 import com.epam.spring.travel_agency.controller.model.OrderModel;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Api(tags = "Order management API")
@@ -20,14 +22,32 @@ import java.util.List;
 })
 @Validated
 public interface OrderAPI {
-
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
+    })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get all order")
     })
     @ApiOperation(value = "Get all order", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/order")
-    public List<OrderModel> getAllOrder();
+    public Page<OrderModel> getAllOrder(@RequestParam(defaultValue = "1")
+                                       @Min(value = 1, message = "page should be greater or equals one")
+                                       int page,
+                                       @RequestParam(defaultValue = "5")
+                                       @Min(value = 1, message = "page should be greater or equals one")
+                                       int size,
+                                       @RequestParam(defaultValue = "id")
+                                       @Pattern(regexp = "id",
+                                                message = "sortBy should be equal 'id'")
+                                       String sortBy,
+                                       @RequestParam(defaultValue = "asc")
+                                       @Pattern(regexp = "asc|desc",
+                                                message = "order should be equal 'asc' or 'desc'")
+                                       String order);
 
 
     @ApiImplicitParams({
@@ -43,7 +63,11 @@ public interface OrderAPI {
 
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "tourStatus", paramType = "path", required = true, value = "tourStatus by which order are searched")
+            @ApiImplicitParam(name = "tourStatus", paramType = "path", required = true, value = "tourStatus by which order are searched"),
+            @ApiImplicitParam(name = "page", paramType = "query", value = "Page number to be read"),
+            @ApiImplicitParam(name = "size", paramType = "query", value = "Page size to be read"),
+            @ApiImplicitParam(name = "sortBy", paramType = "query", value = "Field that will be used for sorting"),
+            @ApiImplicitParam(name = "order", paramType = "query", value = "Order of sorting")
     })
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "Successful get orders by tourStatus")
@@ -51,7 +75,21 @@ public interface OrderAPI {
     @ApiOperation(value = "Get orders by tourStatus", httpMethod = "GET")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/order/tour/{tourStatus}")
-    public List<OrderModel> getOrderByTourStatus(@PathVariable TourStatus tourStatus);
+    public Page<OrderModel> getOrderByTourStatus(@PathVariable TourStatus tourStatus,
+                                                @RequestParam(defaultValue = "1")
+                                                @Min(value = 1, message = "page should be greater or equals one")
+                                                int page,
+                                                @RequestParam(defaultValue = "5")
+                                                @Min(value = 1, message = "page should be greater or equals one")
+                                                int size,
+                                                @RequestParam(defaultValue = "id")
+                                                @Pattern(regexp = "id",
+                                                        message = "sortBy should be equal 'id'")
+                                                String sortBy,
+                                                @RequestParam(defaultValue = "asc")
+                                                @Pattern(regexp = "asc|desc",
+                                                            message = "order should be equal 'asc' or 'desc'")
+                                                String order);
 
 
     @ApiImplicitParams({

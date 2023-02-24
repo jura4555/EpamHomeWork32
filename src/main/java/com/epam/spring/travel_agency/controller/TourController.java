@@ -10,6 +10,7 @@ import com.epam.spring.travel_agency.service.model.enums.TourType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,11 @@ public class TourController implements TourAPI {
     private final TourAssembler tourAssembler;
 
     @Override
-    public List<TourModel> getAllTour() {
+    public Page<TourModel> getAllTour(int page, int size, String sortBy, String order) {
         log.info("[Controller] receiving all tours");
-        List<TourDTO> tourDTOs = tourService.getAllTour();
-        return tourAssembler.toModels(tourDTOs);
+        Page<TourDTO> tourDTOs = tourService.getAllTour(page, size, sortBy, order);
+        Page<TourModel> tourModels = tourDTOs.map(tourAssembler::toModel);
+        return tourModels;
     }
 
     @Override
@@ -38,33 +40,37 @@ public class TourController implements TourAPI {
     }
 
     @Override
-    public List<TourModel> getTourByTourType(TourType tourType) {
+    public Page<TourModel> getTourByTourType(TourType tourType, int page, int size, String sortBy, String order) {
         log.info("[Controller] getTours by tourType {}", tourType);
-        List<TourDTO> tourDTOs = tourService.getTourByTourType(tourType);
-        return tourAssembler.toModels(tourDTOs);
+        Page<TourDTO> tourDTOs = tourService.getTourByTourType(tourType,page, size, sortBy, order);
+        Page<TourModel> tourModels = tourDTOs.map(tourAssembler::toModel);
+        return tourModels;
     }
 
     @Override
-    public List<TourModel> getTourByPlaceCount(int count) {
+    public Page<TourModel> getTourByPlaceCount(int count, int page, int size, String sortBy, String order) {
         log.info("[Controller] getTours by place count {}", count);
-        List<TourDTO> tourDTOs = tourService.getTourByPlaceCount(count);
-        return tourAssembler.toModels(tourDTOs);
+        Page<TourDTO> tourDTOs = tourService.getTourByPlaceCount(count, page, size, sortBy, order);
+        Page<TourModel> tourModels = tourDTOs.map(tourAssembler::toModel);
+        return tourModels;
     }
 
 
     @Override
-    public List<TourModel> getTourByPrice(double minPrice, double maxPrice) {
+    public Page<TourModel> getTourByPrice(double minPrice, double maxPrice, int page, int size, String sortBy, String order) {
         log.info("[Controller] getTour by price {} ", minPrice + " < my price < " + maxPrice);
-        List<TourDTO> tourDTOs = tourService.getTourByPrice(minPrice, maxPrice);
-        return tourAssembler.toModels(tourDTOs);
+        Page<TourDTO> tourDTOs = tourService.getTourByPrice(minPrice, maxPrice, page, size, sortBy, order);
+        Page<TourModel> tourModels = tourDTOs.map(tourAssembler::toModel);
+        return tourModels;
     }
 
 
     @Override
-    public List<TourModel> getTourByHotelType(HotelType hotelType) {
+    public Page<TourModel> getTourByHotelType(HotelType hotelType, int page, int size, String sortBy, String order) {
         log.info("[Controller] getTours by HotelType {}", hotelType);
-        List<TourDTO> tourDTOs = tourService.getTourByHotelType(hotelType);
-        return tourAssembler.toModels(tourDTOs);
+        Page<TourDTO> tourDTOs = tourService.getTourByHotelType(hotelType, page, size, sortBy, order);
+        Page<TourModel> tourModels = tourDTOs.map(tourAssembler::toModel);
+        return tourModels;
     }
 
 

@@ -2,14 +2,15 @@ package com.epam.spring.travel_agency.service;
 
 import com.epam.spring.travel_agency.controller.dto.OrderDTO;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface OrderService {
 
-    List<OrderDTO> getAllOrder();
+    Page<OrderDTO> getAllOrder(int page, int size, String sortBy, String order);
 
-    List<OrderDTO> getOrderByTourStatus(TourStatus tourStatus);
+    Page<OrderDTO> getOrderByTourStatus(TourStatus tourStatus, int page, int size, String sortBy, String order);
 
     OrderDTO getOrderByOrderId(int orderId);
 

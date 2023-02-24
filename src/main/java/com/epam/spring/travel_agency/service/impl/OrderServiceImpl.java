@@ -9,6 +9,10 @@ import com.epam.spring.travel_agency.service.model.enums.TourStatus;
 import com.epam.spring.travel_agency.service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -27,22 +31,23 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    public List<OrderDTO> getAllOrder() {
+    public Page<OrderDTO> getAllOrder(int page, int size, String sortBy, String order) {
         log.info("[Service] receiving all orders");
-        return orderRepository.findAll().stream()
-                .map(orderMapper::mapOrderToOrderDTO)
-                .sorted(Comparator.comparing(OrderDTO::getId))
-                .collect(Collectors.toList());//+
+        Pageable pageable = PageRequest.of(page - 1, size,
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+        Page<OrderDTO> myOrder = orderRepository.findAll(pageable).map(orderMapper::mapOrderToOrderDTO);
+        return myOrder;
     }
 
     @Override
-    public List<OrderDTO> getOrderByTourStatus(TourStatus tourStatus) {
+    public Page<OrderDTO> getOrderByTourStatus(TourStatus tourStatus, int page, int size, String sortBy, String order) {
         log.info("[Service] getOrders by tourStatus {}", tourStatus);
-        List<Order> myOrder = orderRepository.findByTourStatus(tourStatus);
-        return myOrder.stream()
-                .map(orderMapper::mapOrderToOrderDTO)
-                .sorted(Comparator.comparing(OrderDTO::getId))
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page - 1, size,
+                order.equals("desc") ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending());
+        Page<OrderDTO> myOrder = orderRepository.findByTourStatus(tourStatus, pageable).map(orderMapper::mapOrderToOrderDTO);
+        return myOrder;
     }
 
     @Override
