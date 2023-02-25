@@ -14,12 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderDTO> getAllOrder(int page, int size, String sortBy, String order) {
         log.info("[Service] receiving all orders");
         Pageable pageable = PageRequest.of(page - 1, size,
@@ -41,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<OrderDTO> getOrderByTourStatus(TourStatus tourStatus, int page, int size, String sortBy, String order) {
         log.info("[Service] getOrders by tourStatus {}", tourStatus);
         Pageable pageable = PageRequest.of(page - 1, size,
@@ -62,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO createOrder(OrderDTO orderDTO) {
         log.info("[Service] createOrder");
         Order order = orderMapper.mapOrderDTOToOrder(orderDTO);
@@ -71,6 +72,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
+
     public OrderDTO updateOrderDescription(int id, String description) {
         log.info("[Service] updateOrder with description fields");
         Optional<Order> optionalOrder = orderRepository.findById(id);
@@ -84,6 +87,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO updateOrderPrice(int id, int stepDisCount) {
         log.info("[Service] updateOrder with price fields");
         Optional<Order> optionalOrder = orderRepository.findById(id);
@@ -108,6 +112,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDTO updateOrderStatus(int id, TourStatus tourStatus) {
         log.info("[Service] updateOrder with tourStatus fields");
         Optional<Order> optionalOrder = orderRepository.findById(id);

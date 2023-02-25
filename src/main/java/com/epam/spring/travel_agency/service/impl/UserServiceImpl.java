@@ -19,11 +19,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private final UserDetailsMapper userDetailsMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getUserByLogin(String login) {
         log.info("[Service] getUser by login {}", login);
         User user = userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
@@ -46,6 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<UserDTO> getUserByRole(UserRole userRole, int page, int size, String sortBy, String order) {
         log.info("[Service] getUsers by userRole {}", userRole);
         Pageable pageable = PageRequest.of(page - 1, size,
@@ -55,7 +55,9 @@ public class UserServiceImpl implements UserService {
         return myUser;
     }
 
+
     @Override
+    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         log.info("[Service] createUser");
         if (userRepository.existsByLogin(userDTO.getLogin())) {
@@ -78,6 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateUser(int id, UserDTO userDTO) {
         log.info("[Service] updateUser with all fields");
         Optional<User> optionalUser = userRepository.findById(id);
@@ -111,6 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateUserRole(int id, UserRole userRole) {
         log.info("[Service] updateUser with userRole field");
         Optional<User> optionalUser = userRepository.findById(id);
@@ -124,6 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateUserStatus(int id, UserStatus userStatus) {
         log.info("[Service] updateUser with userRole field");
         Optional<User> optionalUser = userRepository.findById(id);

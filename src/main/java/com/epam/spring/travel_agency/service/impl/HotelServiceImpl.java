@@ -14,11 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +44,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public HotelDTO createHotel(HotelDTO hotelDTO) {
         log.info("[Service] createHotel");
         if(hotelRepository.existsByNameAndCity(hotelDTO.getName(), hotelDTO.getCity())){
@@ -57,6 +56,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public HotelDTO updateHotel(int id, HotelDTO hotelDTO) {
         log.info("[Service] updateHotel with all fields {}");
         Optional<Hotel> optionalHotel = hotelRepository.findById(id);
@@ -78,6 +78,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public void deleteHotel(int hotelId) {
         log.info("[Service] deleteHotel with id {}", hotelId);
         if(!hotelRepository.existsById(hotelId)){
