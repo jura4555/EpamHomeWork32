@@ -73,7 +73,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-
     public OrderDTO updateOrderDescription(int id, String description) {
         log.info("[Service] updateOrder with description fields");
         Optional<Order> optionalOrder = orderRepository.findById(id);
