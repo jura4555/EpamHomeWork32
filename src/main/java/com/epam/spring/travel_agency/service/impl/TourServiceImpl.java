@@ -3,7 +3,7 @@ package com.epam.spring.travel_agency.service.impl;
 import com.epam.spring.travel_agency.controller.dto.TourDTO;
 import com.epam.spring.travel_agency.service.TourService;
 import com.epam.spring.travel_agency.service.exception.DateException;
-import com.epam.spring.travel_agency.service.exception.HotelNotExistsExcepton;
+import com.epam.spring.travel_agency.service.exception.HotelNotExistsException;
 import com.epam.spring.travel_agency.service.exception.TourNameAlreadyExistsException;
 import com.epam.spring.travel_agency.service.exception.TourNotFoundException;
 import com.epam.spring.travel_agency.service.mapper.TourMapper;
@@ -167,7 +167,7 @@ public class TourServiceImpl implements TourService {
             throw new TourNameAlreadyExistsException();
         }
         if(tourDTO.getHotel() == null){
-            throw new HotelNotExistsExcepton();
+            throw new HotelNotExistsException();
         }
         if( tourDTO.getDateArrival().compareTo(tourDTO.getDateDaparture()) == 0 ||
                 tourDTO.getDateArrival().isBefore(tourDTO.getDateDaparture())){
@@ -187,7 +187,7 @@ public class TourServiceImpl implements TourService {
             throw new TourNotFoundException();
         }
         if(tourDTO.getHotel() == null){
-            throw new HotelNotExistsExcepton();
+            throw new HotelNotExistsException();
         }
         Tour dbTour = optionalTour.get();
         if(dbTour.getName().compareTo(tourDTO.getName()) != 0) {
@@ -217,7 +217,7 @@ public class TourServiceImpl implements TourService {
         }
         Tour tour = optionalTour.get();
         if(tour.getHotel() == null){
-            throw new HotelNotExistsExcepton();
+            throw new HotelNotExistsException();
         }
         tour.setBurning(burning);
         tour = tourRepository.save(tour);
@@ -234,7 +234,7 @@ public class TourServiceImpl implements TourService {
         }
         Tour tour = optionalTour.get();
         if(tour.getHotel() == null){
-            throw new HotelNotExistsExcepton();
+            throw new HotelNotExistsException();
         }
         tour.setMaxDisCount(maxDisCount);
         tour = tourRepository.save(tour);

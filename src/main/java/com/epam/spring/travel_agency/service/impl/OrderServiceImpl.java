@@ -3,6 +3,7 @@ package com.epam.spring.travel_agency.service.impl;
 import com.epam.spring.travel_agency.controller.dto.OrderDTO;
 import com.epam.spring.travel_agency.service.OrderService;
 import com.epam.spring.travel_agency.service.exception.*;
+import com.epam.spring.travel_agency.service.impl.randomizers.MyDisCountRandomizer;
 import com.epam.spring.travel_agency.service.mapper.OrderMapper;
 import com.epam.spring.travel_agency.service.model.Order;
 import com.epam.spring.travel_agency.service.model.enums.TourStatus;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     private final OrderMapper orderMapper;
+
+    private final MyDisCountRandomizer myDisCountRandomizer;
 
     @Override
     @Transactional(readOnly = true)
@@ -98,9 +100,7 @@ public class OrderServiceImpl implements OrderService {
         if(maxDisCount == 0){
             throw new MaxDisCountNotFound();
         }
-        Random random = new Random();
-        int randNumber = random.nextInt(maxDisCount / stepDisCount) + 1;
-        int discount = stepDisCount * randNumber;
+        int discount = myDisCountRandomizer.getRandomDisCount(maxDisCount, stepDisCount);
         double rawPrice = order.getTour().getPrice();
         double price = rawPrice - (rawPrice * discount/100);
         order.setStepDisCount(stepDisCount);
