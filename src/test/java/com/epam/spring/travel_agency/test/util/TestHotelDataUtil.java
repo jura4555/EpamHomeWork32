@@ -57,7 +57,31 @@ public class TestHotelDataUtil {
                 .build();
     }
 
-    public static HotelDTO getUpdateHotelDTO(){
+    public static Hotel getHotelForCreate(){
+        return Hotel.builder()
+                .name(HOTEL_1_NAME)
+                .city(HOTEL_1_CITY)
+                .hotelType(HOTEL_1_TYPE)
+                .build();
+    }
+
+    public static HotelDTO getHotelDTOForCreate(){
+        return HotelDTO.builder()
+                .name(HOTEL_1_NAME)
+                .city(HOTEL_1_CITY)
+                .hotelType(HOTEL_1_TYPE)
+                .build();
+    }
+
+    public static Hotel getHotelForUpdate(){
+        return Hotel.builder()
+                .name(HOTEL_UPDATE_NAME)
+                .city(HOTEL_UPDATE_CITY)
+                .hotelType(HOTEL_UPDATE_TYPE)
+                .build();
+    }
+
+    public static HotelDTO getHotelDTOForUpdate(){
         return HotelDTO.builder()
                 .name(HOTEL_UPDATE_NAME)
                 .city(HOTEL_UPDATE_CITY)
@@ -65,13 +89,7 @@ public class TestHotelDataUtil {
                 .build();
     }
 
-    public static Hotel getUpdateHotel(){
-        return Hotel.builder()
-                .name(HOTEL_UPDATE_NAME)
-                .city(HOTEL_UPDATE_CITY)
-                .hotelType(HOTEL_UPDATE_TYPE)
-                .build();
-    }
+
 
 
 

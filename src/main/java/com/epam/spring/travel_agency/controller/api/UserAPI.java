@@ -3,7 +3,6 @@ package com.epam.spring.travel_agency.controller.api;
 import com.epam.spring.travel_agency.controller.dto.UserDTO;
 import com.epam.spring.travel_agency.controller.dto.UserDetailsDTO;
 import com.epam.spring.travel_agency.controller.dto.validation.group.OnCreate;
-import com.epam.spring.travel_agency.controller.dto.validation.group.OnUpdate;
 import com.epam.spring.travel_agency.controller.model.UserModel;
 import com.epam.spring.travel_agency.service.model.enums.UserRole;
 import com.epam.spring.travel_agency.service.model.enums.UserStatus;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Api(tags = "User management API")
 @RequestMapping("api/v1")

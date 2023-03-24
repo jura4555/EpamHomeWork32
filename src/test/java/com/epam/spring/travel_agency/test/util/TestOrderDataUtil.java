@@ -75,30 +75,9 @@ public class TestOrderDataUtil {
 
     public static OrderDTO getOrderDTOForCreate(){
         return OrderDTO.builder()
-                .id(ORDER_1_ID)
                 .user(TestUserDataUtil.getUserDTO1())
                 .tour(TestTourDataUtil.getTourDTO1())
                 .description(ORDER_1_DESCRIPTION)
-                .build();
-    }
-
-    public static Order getOrderForUpdate(){
-        return Order.builder()
-                .id(ORDER_1_ID)
-                .user(TestUserDataUtil.getUser1())
-                .tour(TestTourDataUtil.getTour1())
-                .tourStatus(TourStatus.REGISTERED)
-                .description(ORDER_UPDATE_DESCRIPTION)
-                .build();
-    }
-
-    public static OrderDTO getOrderDTOForUpdate(){
-        return OrderDTO.builder()
-                .id(ORDER_1_ID)
-                .user(TestUserDataUtil.getUserDTO1())
-                .tour(TestTourDataUtil.getTourDTO1())
-                .tourStatus(TourStatus.REGISTERED)
-                .description(ORDER_UPDATE_DESCRIPTION)
                 .build();
     }
 

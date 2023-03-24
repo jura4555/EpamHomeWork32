@@ -50,13 +50,4 @@ public class TourAssembler extends RepresentationModelAssemblerSupport<TourDTO, 
         tourModel.add(get, create, update, updateTourBurning, updateTourMaxDisCount, delete);
         return tourModel;
     }
-
-    public List<TourModel> toModels(List<TourDTO> entity){
-        List<TourModel> tourModels = new ArrayList<>();
-        for (int i = 0; i < entity.size(); i++) {
-            TourModel tourModel = toModel(entity.get(i));
-            tourModels.add(tourModel);
-        }
-        return tourModels;
-    }
 }

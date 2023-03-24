@@ -42,15 +42,6 @@ public class HotelAssembler extends RepresentationModelAssemblerSupport<HotelDTO
         hotelModel.add(get, create, update, delete);
         return hotelModel;
     }
-
-    public List<HotelModel> toListModel(List<HotelDTO> entity){
-        List<HotelModel> hotelModels = new ArrayList<>();
-        for (int i = 0; i < entity.size(); i++) {
-            HotelModel hotelModel = toModel(entity.get(i));
-            hotelModels.add(hotelModel);
-        }
-        return hotelModels;
-    }
 }
 
 

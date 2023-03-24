@@ -48,13 +48,4 @@ public class OrderAssembler extends RepresentationModelAssemblerSupport<OrderDTO
         orderModel.add(get, create, updateDescription, updatePrice, updateStatus);
         return orderModel;
     }
-
-    public List<OrderModel> toModels(List<OrderDTO> entity){
-        List<OrderModel> orderModels = new ArrayList<>();
-        for (int i = 0; i < entity.size(); i++) {
-            OrderModel orderModel = toModel(entity.get(i));
-            orderModels.add(orderModel);
-        }
-        return orderModels;
-    }
 }

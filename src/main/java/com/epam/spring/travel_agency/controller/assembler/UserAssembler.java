@@ -42,14 +42,4 @@ public class UserAssembler extends RepresentationModelAssemblerSupport<UserDTO, 
         userModel.add(getUserByLogin, create, update, updateUserRole, updateUserStatus);
         return userModel;
     }
-
-    public List<UserModel> toListModel(List<UserDTO> entity){
-        List<UserModel> userModels = new ArrayList<>();
-        for (int i = 0; i < entity.size(); i++) {
-          UserModel userModel = toModel(entity.get(i));
-          userModels.add(userModel);
-        }
-        return userModels;
-    }
-
 }

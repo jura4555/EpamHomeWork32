@@ -137,7 +137,7 @@ public class OrderServiceImplTest {
         when(orderMapper.mapOrderToOrderDTO(order)).thenReturn(TestOrderDataUtil.getOrderDTO1());
         OrderDTO result = orderService.createOrder(orderDTO);
         assertThat(result, allOf(
-                hasProperty("id", equalTo(orderDTO.getId())),
+                hasProperty("id", equalTo(order.getId())),
                 hasProperty("tourStatus", equalTo(TourStatus.REGISTERED)),
                 hasProperty("description", equalTo(orderDTO.getDescription()))
         ));
@@ -177,12 +177,15 @@ public class OrderServiceImplTest {
 
     @Test
     void updateOrderDescriptionTest(){
+        String newOrderDescription = ORDER_UPDATE_DESCRIPTION;
         Order order = TestOrderDataUtil.getOrder1();
-        OrderDTO orderDTO = TestOrderDataUtil.getOrderDTOForUpdate();
+        OrderDTO orderDTO = TestOrderDataUtil.getOrderDTO1();
         when(orderRepository.findById(ORDER_1_ID)).thenReturn(Optional.of(order));
-        when(orderRepository.save(TestOrderDataUtil.getOrderForUpdate())).thenReturn(TestOrderDataUtil.getOrderForUpdate());
-        when(orderMapper.mapOrderToOrderDTO(TestOrderDataUtil.getOrderForUpdate())).thenReturn(orderDTO);
-        OrderDTO result = orderService.updateOrderDescription(ORDER_1_ID, ORDER_UPDATE_DESCRIPTION);
+        order.setDescription(newOrderDescription);
+        orderDTO.setDescription(newOrderDescription);
+        when(orderRepository.save(order)).thenReturn(order);
+        when(orderMapper.mapOrderToOrderDTO(order)).thenReturn(orderDTO);
+        OrderDTO result = orderService.updateOrderDescription(ORDER_1_ID, newOrderDescription);
         assertThat(result, allOf(
                 hasProperty("id", equalTo(orderDTO.getId())),
                 hasProperty("tourStatus", equalTo(TourStatus.REGISTERED)),

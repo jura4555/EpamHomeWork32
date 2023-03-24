@@ -18,6 +18,8 @@ import org.springframework.data.domain.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.spring.travel_agency.test.util.TestHotelDataUtil.HOTEL_1_ID;
+import static com.epam.spring.travel_agency.test.util.TestHotelDataUtil.HOTEL_2_ID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -74,12 +76,14 @@ public class HotelServiceImplTest {
 
     @Test
     void createHotelTest(){
-        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTO1();
+        HotelDTO createdHotelDTO = TestHotelDataUtil.getHotelDTOForCreate();
+        Hotel createdHotel = TestHotelDataUtil.getHotelForCreate();
         Hotel hotel = TestHotelDataUtil.getHotel1();
-        when(hotelMapper.mapHotelDtoToHotel(hotelDTO)).thenReturn(hotel);
-        when(hotelRepository.save(hotel)).thenReturn(hotel);
+        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTO1();
+        when(hotelMapper.mapHotelDtoToHotel(createdHotelDTO)).thenReturn(createdHotel);
+        when(hotelRepository.save(createdHotel)).thenReturn(hotel);
         when(hotelMapper.mapHotelToHotelDto(hotel)).thenReturn(hotelDTO);
-        HotelDTO result = hotelService.createHotel(hotelDTO);
+        HotelDTO result = hotelService.createHotel(createdHotelDTO);
         assertThat(result, allOf(
                 hasProperty("id", equalTo(hotelDTO.getId())),
                 hasProperty("name", equalTo(hotelDTO.getName())),
@@ -90,7 +94,7 @@ public class HotelServiceImplTest {
 
     @Test
     void createHotelWithHotelExistsExceptionTest(){
-        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTO1();
+        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTOForCreate();
         when(hotelRepository.existsByNameAndCity(hotelDTO.getName(), hotelDTO.getCity())).thenReturn(true);
         assertThrows(HotelNameAndCityAlreadyExistsException.class, () -> hotelService.createHotel(hotelDTO));
     }
@@ -98,8 +102,8 @@ public class HotelServiceImplTest {
     @Test
     void updateHotelTest(){
         Hotel dbHotel = TestHotelDataUtil.getHotel1();
-        HotelDTO hotelDTO = TestHotelDataUtil.getUpdateHotelDTO();
-        Hotel hotel = TestHotelDataUtil.getUpdateHotel();
+        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTOForCreate();
+        Hotel hotel = TestHotelDataUtil.getHotelForUpdate();
         when(hotelRepository.findById(dbHotel.getId())).thenReturn(Optional.of(dbHotel));
         when(hotelMapper.mapHotelDtoToHotel(hotelDTO)).thenReturn(hotel);
         hotel.setId(dbHotel.getId());
@@ -117,27 +121,25 @@ public class HotelServiceImplTest {
 
     @Test
     void updateHotelWithHotelNotFoundExceptionTest(){
-        HotelDTO hotelDTO = TestHotelDataUtil.getUpdateHotelDTO();
+        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTOForUpdate();
         when(hotelRepository.findById(anyInt())).thenReturn(Optional.ofNullable(null));
         assertThrows(HotelNotFoundException.class, () -> hotelService.updateHotel(anyInt(), hotelDTO));
     }
 
     @Test
     void updateHotelWithHotelExistsExceptionTest(){
-        int inputId = TestHotelDataUtil.HOTEL_1_ID;
-        HotelDTO hotelDTO = TestHotelDataUtil.getUpdateHotelDTO();
-        Hotel hotel = TestHotelDataUtil.getHotel1();
-        when(hotelRepository.findById(inputId)).thenReturn(Optional.of(hotel));
+        HotelDTO hotelDTO = TestHotelDataUtil.getHotelDTOForCreate();
+        Hotel hotel = TestHotelDataUtil.getHotel2();
+        when(hotelRepository.findById(HOTEL_2_ID)).thenReturn(Optional.of(hotel));
         when(hotelRepository.existsByNameAndCity(hotelDTO.getName(), hotelDTO.getCity())).thenReturn(true);
-        assertThrows(HotelNameAndCityAlreadyExistsException.class, () -> hotelService.updateHotel(inputId, hotelDTO));
+        assertThrows(HotelNameAndCityAlreadyExistsException.class, () -> hotelService.updateHotel(HOTEL_2_ID, hotelDTO));
     }
 
     @Test
     void deleteHotelTest(){
-        int deletedHotelId = TestHotelDataUtil.HOTEL_1_ID;
-        when(hotelRepository.existsById(deletedHotelId)).thenReturn(true);
-        hotelService.deleteHotel(deletedHotelId);
-        verify(hotelRepository, times(1)).deleteById(deletedHotelId);
+        when(hotelRepository.existsById(HOTEL_1_ID)).thenReturn(true);
+        hotelService.deleteHotel(HOTEL_1_ID);
+        verify(hotelRepository, times(1)).deleteById(HOTEL_1_ID);
     }
 
     @Test

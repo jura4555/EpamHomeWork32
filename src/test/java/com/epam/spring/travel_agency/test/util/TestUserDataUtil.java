@@ -116,12 +116,10 @@ public class TestUserDataUtil {
 
     public static User getUserForCreate(){
         return User.builder()
-                .id(USER_1_ID)
                 .login(USER_1_LOGIN)
                 .password(USER_1_PASSWORD)
                 .userDetails(
                         UserDetails.builder()
-                                .id(USER_1_ID)
                                 .firstname(USER_DETAILS_1_FIRST_NAME)
                                 .lastname(USER_DETAILS_1_LAST_NAME)
                                 .email(USER_DETAILS_1_EMAIL)
@@ -133,7 +131,6 @@ public class TestUserDataUtil {
 
     public static UserDTO getUserDTOForCreate(){
         return UserDTO.builder()
-                .id(USER_1_ID)
                 .login(USER_1_LOGIN)
                 .password(USER_1_PASSWORD)
                 .repeatPassword(USER_1_REPEAT_PASSWORD)

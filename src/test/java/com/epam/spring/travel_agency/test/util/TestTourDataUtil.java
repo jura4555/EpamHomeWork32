@@ -41,7 +41,7 @@ public class TestTourDataUtil {
     public static final String TOUR_UPDATE_PLACE_DEPARTURE = "Lviv";
     public static final String TOUR_UPDATE_PLACE_ARRIVAL = "Kyiv";
     public static final int TOUR_UPDATE_MAX_DISCOUNT = 25;
-    public static final int TOUR_UPDATE_PLACE_COUNT = 7;
+    public static final int TOUR_UPDATE_PLACE_COUNT = 0;
     public static final TourType TOUR_UPDATE_TOUR_TYPE = TourType.REST;
     public static final boolean TOUR_UPDATE_BURNING = true;
 
@@ -118,7 +118,6 @@ public class TestTourDataUtil {
 
     public static Tour getTourForCreate(){
         return Tour.builder()
-                .id(TOUR_1_ID)
                 .name(TOUR_1_NAME)
                 .price(TOUR_1_PRICE)
                 .dateDaparture(TOUR_1_DATA_DEPARTURE)
@@ -129,13 +128,12 @@ public class TestTourDataUtil {
                 .placeCount(TOUR_1_PLACE_COUNT)
                 .hotel(TestHotelDataUtil.getHotel1())
                 .tourType(TOUR_1_TOUR_TYPE)
-                .burning(TOUR_1_BURNING)
+                .burning(false)
                 .build();
     }
 
     public static TourDTO getTourDTOForCreate(){
         return TourDTO.builder()
-                .id(TOUR_1_ID)
                 .name(TOUR_1_NAME)
                 .price(TOUR_1_PRICE)
                 .dateDaparture(TOUR_1_DATA_DEPARTURE)
@@ -146,7 +144,7 @@ public class TestTourDataUtil {
                 .placeCount(TOUR_1_PLACE_COUNT)
                 .hotel(TestHotelDataUtil.getHotelDTO1())
                 .tourType(TOUR_1_TOUR_TYPE)
-                .burning(TOUR_1_BURNING)
+                .burning(false)
                 .build();
     }
 
@@ -167,7 +165,7 @@ public class TestTourDataUtil {
                         .hotelType(TestHotelDataUtil.HOTEL_UPDATE_TYPE)
                         .build())
                 .tourType(TOUR_UPDATE_TOUR_TYPE)
-                .burning(TOUR_UPDATE_BURNING)
+                .burning(false)
                 .build();
     }
 
@@ -188,7 +186,7 @@ public class TestTourDataUtil {
                         .hotelType(TestHotelDataUtil.HOTEL_UPDATE_TYPE)
                         .build())
                 .tourType(TOUR_UPDATE_TOUR_TYPE)
-                .burning(TOUR_UPDATE_BURNING)
+                .burning(false)
                 .build();
     }
 

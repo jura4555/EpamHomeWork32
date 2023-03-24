@@ -94,12 +94,14 @@ public class UserServiceImplTest {
 
     @Test
     void createUserTest(){
+        User createdUser = TestUserDataUtil.getUserForCreate();
+        UserDTO createdUserDTO = TestUserDataUtil.getUserDTOForCreate();
         User user = TestUserDataUtil.getUser1();
-        UserDTO userDTO = TestUserDataUtil.getUserDTOForCreate();
-        when(userMapper.mapUserDTOToUser(userDTO)).thenReturn(TestUserDataUtil.getUserForCreate());
-        when(userRepository.save(user)).thenReturn(user);
-        when(userMapper.mapUserToUserDTO(user)).thenReturn(TestUserDataUtil.getUserDTO1());
-        UserDTO result = userService.createUser(userDTO);
+        UserDTO userDTO = TestUserDataUtil.getUserDTO1();
+        when(userMapper.mapUserDTOToUser(createdUserDTO)).thenReturn(createdUser);
+        when(userRepository.save(createdUser)).thenReturn(user);
+        when(userMapper.mapUserToUserDTO(user)).thenReturn(userDTO);
+        UserDTO result = userService.createUser(createdUserDTO);
         assertThat(result, allOf(
                 hasProperty("id", equalTo(userDTO.getId())),
                 hasProperty("login", equalTo(userDTO.getLogin())),
