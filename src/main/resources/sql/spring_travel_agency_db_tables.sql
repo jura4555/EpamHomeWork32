@@ -1,0 +1,118 @@
+DROP DATABASE IF EXISTS spring_db_agency;
+
+CREATE DATABASE IF NOT EXISTS spring_db_agency;
+
+USE spring_db_agency;
+
+DROP TABLE IF EXISTS user_role;
+CREATE TABLE IF NOT EXISTS user_role(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+title VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS user_status;
+CREATE TABLE IF NOT EXISTS user_status(
+id INTEGER NOT NULL, 
+title VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS user_details;
+CREATE TABLE IF NOT EXISTS user_details(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+first_name VARCHAR(255) NOT NULL,
+last_name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL UNIQUE,
+phone VARCHAR(13) NOT NULL UNIQUE,
+PRIMARY KEY(id) 
+);
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE IF NOT EXISTS user(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+login VARCHAR(255) NOT NULL UNIQUE,
+password VARCHAR(255) NOT NULL,
+user_details_id INTEGER NOT NULL UNIQUE,
+user_role_id INTEGER NOT NULL,
+user_status_id INTEGER NOT NULL,
+PRIMARY KEY(id),
+CONSTRAINT user_role_id_foreigh_key FOREIGN KEY (user_role_id) REFERENCES user_role(id),
+CONSTRAINT user_status_id_foreigh_key FOREIGN KEY (user_status_id) REFERENCES user_status(id),
+CONSTRAINT user_details_id_foreigh_key FOREIGN KEY (user_details_id) REFERENCES user_details(id)
+);
+
+DROP TABLE IF EXISTS hotel_type;
+CREATE TABLE IF NOT EXISTS hotel_type(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+title VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS hotel;
+CREATE TABLE IF NOT EXISTS hotel(
+id INTEGER NOT NULL AUTO_INCREMENT,
+name VARCHAR(255) NOT NULL,
+city VARCHAR(255) NOT NULL,
+hotel_type_id INTEGER NOT NULL,
+PRIMARY KEY(id),
+CONSTRAINT hotel_unique_key UNIQUE(name, city),
+CONSTRAINT hotel_type_id_foreigh_key FOREIGN KEY (hotel_type_id) REFERENCES hotel_type(id)
+);
+
+DROP TABLE IF EXISTS tour_type;
+CREATE TABLE IF NOT EXISTS tour_type(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+title VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS tour;
+CREATE TABLE IF NOT EXISTS tour(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+name VARCHAR(255) NOT NULL UNIQUE,
+price DECIMAL(10,4) NOT NULL,
+date_departure DATE NOT NULL,
+date_arrival DATE NOT NULL,
+place_departure VARCHAR(255) NOT NULL,
+place_arrival VARCHAR(255) NOT NULL,
+max_discount INTEGER,
+place_count INTEGER NOT NULL,
+hotel_id INTEGER,
+tour_type_id INTEGER NOT NULL,
+is_burning BOOL NOT NULL,
+PRIMARY KEY(id),
+CONSTRAINT hotel_id_foreigh_key FOREIGN KEY (hotel_id) REFERENCES hotel(id) ON DELETE SET NULL,
+CONSTRAINT tour_type_id_foreigh_key FOREIGN KEY (tour_type_id) REFERENCES tour_type(id)
+);
+
+DROP TABLE IF EXISTS tour_status;
+CREATE TABLE IF NOT EXISTS tour_status(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+title VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+);
+
+DROP TABLE IF EXISTS ordering;
+CREATE TABLE IF NOT EXISTS ordering(
+id INTEGER NOT NULL AUTO_INCREMENT, 
+user_id INTEGER NOT NULL,
+tour_id INTEGER NOT NULL,
+price DECIMAL(10,4),
+step_discount INTEGER, 
+discount INTEGER,
+tour_staus_id INTEGER NOT NULL,
+ordering_description VARCHAR(610),
+PRIMARY KEY(id),
+CONSTRAINT tour_staus_id_foreigh_key FOREIGN KEY (tour_staus_id) REFERENCES tour_status(id),
+CONSTRAINT user_id_foreigh_key FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+CONSTRAINT tour_id_foreigh_key FOREIGN KEY (tour_id) REFERENCES tour(id) ON DELETE CASCADE
+);
+
+
+
+
+
+
+
+
